@@ -1,0 +1,17 @@
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\bin\Debug\net6.0-windows\Winforms Chess.exe
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\bin\Debug\net6.0-windows\Winforms Chess.deps.json
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\bin\Debug\net6.0-windows\Winforms Chess.runtimeconfig.json
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\bin\Debug\net6.0-windows\Winforms Chess.dll
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\bin\Debug\net6.0-windows\Winforms Chess.pdb
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms Chess.csproj.AssemblyReference.cache
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms_Chess.Form1.resources
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms Chess.csproj.GenerateResource.cache
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms Chess.GeneratedMSBuildEditorConfig.editorconfig
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms Chess.AssemblyInfoInputs.cache
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms Chess.AssemblyInfo.cs
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms Chess.csproj.CoreCompileInputs.cache
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms Chess.dll
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\refint\Winforms Chess.dll
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms Chess.pdb
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms Chess.genruntimeconfig.cache
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\ref\Winforms Chess.dll
