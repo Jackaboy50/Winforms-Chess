@@ -35,6 +35,8 @@ namespace Winforms_Chess
                 button.Size = new Size(100, 100);
                 button.FlatStyle = FlatStyle.Flat;
                 button.FlatAppearance.BorderSize = 0;
+                button.SendToBack();
+                button.Enabled = false;
                 if (!colourFlip)
                 {
                     button.BackColor = Color.BurlyWood;
@@ -54,52 +56,55 @@ namespace Winforms_Chess
         {
             for(int i = 0; i < 8; i++)
             {
-                whitePieces[i] = new Pawn(true);
-                blackPieces[i] = new Pawn(false);
-                chessBoard[6, i].Image = whitePieces[0].image;
-                chessBoard[1,i].Image = blackPieces[0].image;
+                whitePieces[i] = new Pawn(true, i, 6);
+                blackPieces[i] = new Pawn(false, i, 1);
+                Controls.Add(whitePieces[i].pieceButton);
+                Controls.Add(blackPieces[i].pieceButton);
             }
 
             string pieceOrder = "rnbqkbnr";
-
             for (int i = 0; i < 8; i++)
             {
                 switch (pieceOrder[i])
                 {
                     case 'r':
-                        whitePieces[i + 8] = new Rook(true);
-                        blackPieces[i + 8] = new Rook(false);
+                        whitePieces[i + 8] = new Rook(true, i, 7);
+                        blackPieces[i + 8] = new Rook(false, i, 0);
                         break;
 
                     case 'n':
-                        whitePieces[i + 8] = new Knight(true);
-                        blackPieces[i + 8] = new Knight(false);
+                        whitePieces[i + 8] = new Knight(true, i, 7);
+                        blackPieces[i + 8] = new Knight(false, i, 0);
                         break;
 
                     case 'b':
-                        whitePieces[i + 8] = new Bishop(true);
-                        blackPieces[i + 8] = new Bishop(false);
+                        whitePieces[i + 8] = new Bishop(true, i, 7);
+                        blackPieces[i + 8] = new Bishop(false, i, 0);
                         break;
 
                     case 'q':
-                        whitePieces[i + 8] = new Queen(true);
-                        blackPieces[i + 8] = new Queen(false);
+                        whitePieces[i + 8] = new Queen(true, i, 7);
+                        blackPieces[i + 8] = new Queen(false, i, 0);
                         break;
 
                     case 'k':
-                        whitePieces[i + 8] = new King(true);
-                        blackPieces[i + 8] = new King(false);
+                        whitePieces[i + 8] = new King(true, i, 7);
+                        blackPieces[i + 8] = new King(false, i, 0);
                         break;
                 }
-                chessBoard[7, i].Image = whitePieces[i + 8].image;
-                chessBoard[0, i].Image = blackPieces[i + 8].image;
+                Controls.Add(whitePieces[i + 8].pieceButton);
+                Controls.Add(blackPieces[i + 8].pieceButton);
             }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            BuildBoard();
             AddPieces();
+            BuildBoard();
+        }
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

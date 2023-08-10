@@ -8,9 +8,9 @@ namespace Winforms_Chess
 {
     internal class Pawn : Piece
     {
-        public Pawn(bool white) : base(white)
+        public Pawn(bool white, int xPosition, int yPosition) : base(white, xPosition, yPosition)
         {
-            if(white)
+            if (white)
             {
                 image = new Bitmap("whitePieces\\whitePawn.png");
             }
@@ -18,6 +18,7 @@ namespace Winforms_Chess
             {
                 image = new Bitmap("blackPieces\\blackPawn.png");
             }
+            InitializeButton();
         }
 
         public override void MoveDisplay()

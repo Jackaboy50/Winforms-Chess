@@ -8,7 +8,7 @@ namespace Winforms_Chess
 {
     internal class Rook : Piece
     {
-        public Rook(bool white) : base(white)
+        public Rook(bool white, int xPosition, int yPosition) : base(white, xPosition, yPosition)
         {
             if (white)
             {
@@ -18,6 +18,7 @@ namespace Winforms_Chess
             {
                 image = new Bitmap("blackPieces\\blackRook.png");
             }
+            InitializeButton();
         }
 
         public override void MoveDisplay()

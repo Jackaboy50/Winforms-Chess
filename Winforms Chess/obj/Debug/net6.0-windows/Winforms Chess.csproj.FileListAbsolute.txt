@@ -15,3 +15,4 @@ D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\refint
 D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms Chess.pdb
 D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms Chess.genruntimeconfig.cache
 D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\ref\Winforms Chess.dll
+D:\jackt\Documents\Winforms-Chess\Winforms Chess\obj\Debug\net6.0-windows\Winforms_Chess.Properties.Resources.resources

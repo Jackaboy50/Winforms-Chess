@@ -8,7 +8,7 @@ namespace Winforms_Chess
 {
     internal class King : Piece
     {
-        public King(bool white) : base(white)
+        public King(bool white, int xPosition, int yPosition) : base(white, xPosition, yPosition)
         {
             if (white)
             {
@@ -18,6 +18,7 @@ namespace Winforms_Chess
             {
                 image = new Bitmap("blackPieces\\blackKing.png");
             }
+            InitializeButton();
         }
 
         public override void MoveDisplay()

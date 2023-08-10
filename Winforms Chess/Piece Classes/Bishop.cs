@@ -8,7 +8,7 @@ namespace Winforms_Chess
 {
     internal class Bishop : Piece
     {
-        public Bishop(bool white) : base(white)
+        public Bishop(bool white, int xPosition, int yPosition) : base(white, xPosition, yPosition)
         {
             if (white)
             {
@@ -18,6 +18,7 @@ namespace Winforms_Chess
             {
                 image = new Bitmap("blackPieces\\blackBishop.png");
             }
+            InitializeButton();
         }
 
         public override void MoveDisplay()
