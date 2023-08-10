@@ -22,6 +22,17 @@ namespace Winforms_Chess
         }
 
         public abstract void MoveDisplay();
+        public abstract List<Tuple<int, int>> PossibleMoves();
+        public void PieceClick(object sender, MouseEventArgs e)
+        {
+            foreach (Tuple<int,int> position in PossibleMoves())
+            {
+                Button moveButton = new Button();
+                moveButton.Size = new Size(100, 100);
+                moveButton.Location = new Point(position.Item1 * 100, position.Item2 * 100);
+                moveButton.BackColor = Color.Green;
+            }
+        }
         public void InitializeButton()
         {
             pieceButton = new Button();
@@ -40,6 +51,7 @@ namespace Winforms_Chess
 
             pieceButton.FlatStyle = FlatStyle.Flat;
             pieceButton.FlatAppearance.BorderSize = 0;
+            pieceButton.MouseDown += new MouseEventHandler(PieceClick);
             pieceButton.BringToFront();
         }
     }

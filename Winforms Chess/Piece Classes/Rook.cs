@@ -25,5 +25,11 @@ namespace Winforms_Chess
         {
 
         }
+        public override List<Tuple<int, int>> PossibleMoves()
+        {
+            List<Tuple<int, int>> possibleMoves = new List<Tuple<int, int>>();
+
+            return possibleMoves;
+        }
     }
 }
