@@ -32,15 +32,42 @@ namespace Winforms_Chess
             foreach (Tuple<int,int> position in PossibleMoves())
             {
                 Tuple<bool, bool> moveCheck = IsMove(position.Item1, position.Item2);
-                if(moveCheck.Item1 && moveCheck.Item2)
+                if(moveCheck.Item1 && moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
                 {
                     chessForm.GetPieceAt(position.Item1,position.Item2).pieceButton.BackColor = Color.Green;
                 }
-                else if(moveCheck.Item1 && !moveCheck.Item2)
+                else if(moveCheck.Item1 && !moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
                 {
                     CreateMoveButton(position.Item1, position.Item2);
                 }
             }
+        }
+
+        public virtual bool LineOfSight(int xPosition, int yPosition)
+        {
+            if(this.yPosition > yPosition)
+            {
+                //Check Up
+                for (int i = this.yPosition; i > yPosition; i--)
+                {
+                    if (chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                //Check down
+                for (int i = this.yPosition; i < yPosition; i++)
+                {
+                    if (chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         public void RemoveMoveButtons()
@@ -56,13 +83,16 @@ namespace Winforms_Chess
 
             foreach(Piece p in chessForm.allPieces)
             {
-                if ((p.xPosition + p.yPosition) % 2 != 0)
+                if(p != null)
                 {
-                    p.pieceButton.BackColor = Color.Peru;
-                }
-                else
-                {
-                    p.pieceButton.BackColor = Color.BurlyWood;
+                    if ((p.xPosition + p.yPosition) % 2 != 0)
+                    {
+                        p.pieceButton.BackColor = Color.Peru;
+                    }
+                    else
+                    {
+                        p.pieceButton.BackColor = Color.BurlyWood;
+                    }
                 }
             }
         }

@@ -57,7 +57,7 @@ namespace Winforms_Chess
 
         private void AddPieces()
         {
-            for(int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 whitePieces[i] = new Pawn(true, i, 6, this);
                 blackPieces[i] = new Pawn(false, i, 1, this);

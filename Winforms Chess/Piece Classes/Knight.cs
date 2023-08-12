@@ -37,5 +37,10 @@ namespace Winforms_Chess
             }
             return possibleMoves;
         }
+
+        public override bool LineOfSight(int xPosition, int yPosition)
+        {
+            return true;
+        }
     }
 }
