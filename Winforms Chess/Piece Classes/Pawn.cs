@@ -8,7 +8,7 @@ namespace Winforms_Chess
 {
     internal class Pawn : Piece
     {
-        public Pawn(bool white, int xPosition, int yPosition) : base(white, xPosition, yPosition)
+        public Pawn(bool white, int xPosition, int yPosition, Form1 chessForm) : base(white, xPosition, yPosition, chessForm)
         {
             if (white)
             {
@@ -29,9 +29,21 @@ namespace Winforms_Chess
         public override List<Tuple<int,int>> PossibleMoves()
         {
             List<Tuple<int,int>> possibleMoves = new List<Tuple<int,int>>();
-            possibleMoves.Add(new Tuple<int,int>(xPosition - 1,yPosition - 1));
-            possibleMoves.Add(new Tuple<int, int>(xPosition - 1, yPosition));
-            possibleMoves.Add(new Tuple<int, int>(xPosition - 1, yPosition + 1));
+            if (white)
+            {
+                possibleMoves.Add(new Tuple<int, int>(xPosition, yPosition - 1));
+                possibleMoves.Add(new Tuple<int, int>(xPosition - 1, yPosition - 1));
+                possibleMoves.Add(new Tuple<int, int>(xPosition + 1, yPosition - 1));
+                possibleMoves.Add(new Tuple<int, int>(xPosition, yPosition - 2));
+            }
+            else
+            {
+                possibleMoves.Add(new Tuple<int, int>(xPosition, yPosition + 1));
+                possibleMoves.Add(new Tuple<int, int>(xPosition - 1, yPosition + 1));
+                possibleMoves.Add(new Tuple<int, int>(xPosition + 1, yPosition + 1));
+                possibleMoves.Add(new Tuple<int, int>(xPosition, yPosition + 2));
+            }
+            
             return possibleMoves;
         }
     }

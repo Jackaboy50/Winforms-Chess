@@ -8,7 +8,7 @@ namespace Winforms_Chess
 {
     internal class Bishop : Piece
     {
-        public Bishop(bool white, int xPosition, int yPosition) : base(white, xPosition, yPosition)
+        public Bishop(bool white, int xPosition, int yPosition, Form1 chessForm) : base(white, xPosition, yPosition, chessForm)
         {
             if (white)
             {

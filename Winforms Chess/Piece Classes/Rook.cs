@@ -8,7 +8,7 @@ namespace Winforms_Chess
 {
     internal class Rook : Piece
     {
-        public Rook(bool white, int xPosition, int yPosition) : base(white, xPosition, yPosition)
+        public Rook(bool white, int xPosition, int yPosition, Form1 chessForm) : base(white, xPosition, yPosition, chessForm)
         {
             if (white)
             {

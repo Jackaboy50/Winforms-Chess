@@ -8,7 +8,7 @@ namespace Winforms_Chess
 {
     internal class Queen : Piece
     {
-        public Queen(bool white,int xPosition, int yPosition) : base(white, xPosition, yPosition)
+        public Queen(bool white, int xPosition, int yPosition, Form1 chessForm) : base(white, xPosition, yPosition, chessForm)
         {
             if (white)
             {

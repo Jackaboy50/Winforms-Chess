@@ -8,17 +8,19 @@ namespace Winforms_Chess
 {
     internal abstract class Piece
     {
+        public Form1 chessForm;
         public int xPosition;
         public int yPosition;
         public Button pieceButton;
         public Image image { get; protected set; }
         public bool white { get; private set; }
 
-        public Piece(bool white, int xPosition, int yPosition)
+        public Piece(bool white, int xPosition, int yPosition, Form1 chessForm)
         {
             this.white = white;
             this.xPosition = xPosition;
             this.yPosition = yPosition;
+            this.chessForm = chessForm;
         }
 
         public abstract void MoveDisplay();
@@ -27,10 +29,14 @@ namespace Winforms_Chess
         {
             foreach (Tuple<int,int> position in PossibleMoves())
             {
+                Console.WriteLine($"{position.Item1}, {position.Item2}");
                 Button moveButton = new Button();
                 moveButton.Size = new Size(100, 100);
                 moveButton.Location = new Point(position.Item1 * 100, position.Item2 * 100);
                 moveButton.BackColor = Color.Green;
+                moveButton.FlatStyle = FlatStyle.Flat;
+                moveButton.FlatAppearance.BorderSize = 0;
+                chessForm.Controls.Add(moveButton);
             }
         }
         public void InitializeButton()

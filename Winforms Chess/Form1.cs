@@ -56,8 +56,8 @@ namespace Winforms_Chess
         {
             for(int i = 0; i < 8; i++)
             {
-                whitePieces[i] = new Pawn(true, i, 6);
-                blackPieces[i] = new Pawn(false, i, 1);
+                whitePieces[i] = new Pawn(true, i, 6, this);
+                blackPieces[i] = new Pawn(false, i, 1, this);
                 Controls.Add(whitePieces[i].pieceButton);
                 Controls.Add(blackPieces[i].pieceButton);
             }
@@ -68,28 +68,28 @@ namespace Winforms_Chess
                 switch (pieceOrder[i])
                 {
                     case 'r':
-                        whitePieces[i + 8] = new Rook(true, i, 7);
-                        blackPieces[i + 8] = new Rook(false, i, 0);
+                        whitePieces[i + 8] = new Rook(true, i, 7, this);
+                        blackPieces[i + 8] = new Rook(false, i, 0, this);
                         break;
 
                     case 'n':
-                        whitePieces[i + 8] = new Knight(true, i, 7);
-                        blackPieces[i + 8] = new Knight(false, i, 0);
+                        whitePieces[i + 8] = new Knight(true, i, 7, this);
+                        blackPieces[i + 8] = new Knight(false, i, 0, this);
                         break;
 
                     case 'b':
-                        whitePieces[i + 8] = new Bishop(true, i, 7);
-                        blackPieces[i + 8] = new Bishop(false, i, 0);
+                        whitePieces[i + 8] = new Bishop(true, i, 7, this);
+                        blackPieces[i + 8] = new Bishop(false, i, 0, this);
                         break;
 
                     case 'q':
-                        whitePieces[i + 8] = new Queen(true, i, 7);
-                        blackPieces[i + 8] = new Queen(false, i, 0);
+                        whitePieces[i + 8] = new Queen(true, i, 7, this);
+                        blackPieces[i + 8] = new Queen(false, i, 0, this);
                         break;
 
                     case 'k':
-                        whitePieces[i + 8] = new King(true, i, 7);
-                        blackPieces[i + 8] = new King(false, i, 0);
+                        whitePieces[i + 8] = new King(true, i, 7, this);
+                        blackPieces[i + 8] = new King(false, i, 0, this);
                         break;
                 }
                 Controls.Add(whitePieces[i + 8].pieceButton);
@@ -100,7 +100,7 @@ namespace Winforms_Chess
         private void Form1_Load(object sender, EventArgs e)
         {
             AddPieces();
-            BuildBoard();
+            //BuildBoard();
         }
 
         
