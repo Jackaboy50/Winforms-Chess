@@ -8,6 +8,7 @@ namespace Winforms_Chess
 {
     internal abstract class Piece
     {
+        public static int movesCount = 0;
         public Form1 chessForm;
         public int xPosition;
         public int yPosition;
@@ -27,6 +28,14 @@ namespace Winforms_Chess
         public abstract List<Tuple<int, int>> PossibleMoves();
         public void PieceClick(object sender, MouseEventArgs e)
         {
+            if(movesCount > 0)
+            {
+                for(int i = 0; i < movesCount; i++)
+                {
+                    chessForm.Controls.RemoveAt(0);
+                }
+                movesCount = 0;
+            }
             foreach (Tuple<int,int> position in PossibleMoves())
             {
                 Console.WriteLine($"{position.Item1}, {position.Item2}");
@@ -37,6 +46,8 @@ namespace Winforms_Chess
                 moveButton.FlatStyle = FlatStyle.Flat;
                 moveButton.FlatAppearance.BorderSize = 0;
                 chessForm.Controls.Add(moveButton);
+                moveButton.BringToFront();
+                movesCount++;
             }
         }
         public void InitializeButton()

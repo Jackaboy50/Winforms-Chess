@@ -100,7 +100,7 @@ namespace Winforms_Chess
         private void Form1_Load(object sender, EventArgs e)
         {
             AddPieces();
-            //BuildBoard();
+            BuildBoard();
         }
 
         

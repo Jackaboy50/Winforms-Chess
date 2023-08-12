@@ -28,7 +28,13 @@ namespace Winforms_Chess
         public override List<Tuple<int, int>> PossibleMoves()
         {
             List<Tuple<int, int>> possibleMoves = new List<Tuple<int, int>>();
-
+            for(int i = -1; i < 2; i++)
+            {
+                possibleMoves.Add(new Tuple<int, int>(xPosition - 1, yPosition + i ));
+                possibleMoves.Add(new Tuple<int, int>(xPosition + 1, yPosition + i));
+            }
+            possibleMoves.Add(new Tuple<int, int>(xPosition, yPosition - 1));
+            possibleMoves.Add(new Tuple<int, int>(xPosition, yPosition + 1));
             return possibleMoves;
         }
     }
