@@ -1,10 +1,13 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace Winforms_Chess
 {
-    public partial class Form1 : Form
+    internal partial class Form1 : Form
     {
         Button[,] chessBoard = new Button[8,8];
         Piece[] whitePieces = new Piece[16];
         Piece[] blackPieces = new Piece[16];
+        public Piece[] allPieces = new Piece[32];
         public Form1()
         {
             InitializeComponent();
@@ -94,6 +97,7 @@ namespace Winforms_Chess
                 }
                 Controls.Add(whitePieces[i + 8].pieceButton);
                 Controls.Add(blackPieces[i + 8].pieceButton);
+                allPieces = whitePieces.Concat(blackPieces).ToArray();
             }
         }
 
@@ -103,6 +107,28 @@ namespace Winforms_Chess
             BuildBoard();
         }
 
-        
+        public bool IsPieceAt(int xPosition, int yPosition)
+        {
+            for (int i = 0; i < allPieces.Length; i++)
+            {
+                if (allPieces[i].xPosition == xPosition && allPieces[i].yPosition == yPosition)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public Piece GetPieceAt(int xPosition, int yPosition)
+        {
+            for (int i = 0; i < allPieces.Length; i++)
+            {
+                if (allPieces[i].xPosition == xPosition && allPieces[i].yPosition == yPosition)
+                {
+                    return allPieces[i];
+                }
+            }
+            return null;
+        }
     }
 }

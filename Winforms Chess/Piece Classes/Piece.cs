@@ -28,27 +28,75 @@ namespace Winforms_Chess
         public abstract List<Tuple<int, int>> PossibleMoves();
         public void PieceClick(object sender, MouseEventArgs e)
         {
-            if(movesCount > 0)
+            RemoveMoveButtons();
+            foreach (Tuple<int,int> position in PossibleMoves())
             {
-                for(int i = 0; i < movesCount; i++)
+                Tuple<bool, bool> moveCheck = IsMove(position.Item1, position.Item2);
+                if(moveCheck.Item1 && moveCheck.Item2)
+                {
+                    chessForm.GetPieceAt(position.Item1,position.Item2).pieceButton.BackColor = Color.Green;
+                }
+                else if(moveCheck.Item1 && !moveCheck.Item2)
+                {
+                    CreateMoveButton(position.Item1, position.Item2);
+                }
+            }
+        }
+
+        public void RemoveMoveButtons()
+        {
+            if (movesCount > 0)
+            {
+                for (int i = 0; i < movesCount; i++)
                 {
                     chessForm.Controls.RemoveAt(0);
                 }
                 movesCount = 0;
             }
-            foreach (Tuple<int,int> position in PossibleMoves())
+
+            foreach(Piece p in chessForm.allPieces)
             {
-                Console.WriteLine($"{position.Item1}, {position.Item2}");
-                Button moveButton = new Button();
-                moveButton.Size = new Size(100, 100);
-                moveButton.Location = new Point(position.Item1 * 100, position.Item2 * 100);
-                moveButton.BackColor = Color.Green;
-                moveButton.FlatStyle = FlatStyle.Flat;
-                moveButton.FlatAppearance.BorderSize = 0;
-                chessForm.Controls.Add(moveButton);
-                moveButton.BringToFront();
-                movesCount++;
+                if ((p.xPosition + p.yPosition) % 2 != 0)
+                {
+                    p.pieceButton.BackColor = Color.Peru;
+                }
+                else
+                {
+                    p.pieceButton.BackColor = Color.BurlyWood;
+                }
             }
+        }
+
+        public Tuple<bool, bool> IsMove(int xPosition, int yPosition)
+        {
+            bool pieceFound = false;
+            bool isMove = false;
+            if(chessForm.IsPieceAt(xPosition, yPosition))
+            {
+                pieceFound = true;
+                if (chessForm.GetPieceAt(xPosition,yPosition).white != this.white)
+                {
+                    isMove = true;
+                }
+            }
+            if (!pieceFound)
+            {
+                isMove = true;
+            }
+            return new Tuple<bool, bool>(isMove, pieceFound);
+        }
+
+        public void CreateMoveButton(int xPosition, int yPosition)
+        {
+            Button moveButton = new Button();
+            moveButton.Size = new Size(100, 100);
+            moveButton.Location = new Point(xPosition * 100, yPosition * 100);
+            moveButton.BackColor = Color.Green;
+            moveButton.FlatStyle = FlatStyle.Flat;
+            moveButton.FlatAppearance.BorderSize = 0;
+            chessForm.Controls.Add(moveButton);
+            moveButton.BringToFront();
+            movesCount++;
         }
         public void InitializeButton()
         {
