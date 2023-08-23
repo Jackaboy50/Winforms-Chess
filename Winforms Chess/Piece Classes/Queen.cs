@@ -21,11 +21,6 @@ namespace Winforms_Chess
             InitializeButton();
         }
 
-        public override void MoveDisplay()
-        {
-
-        }
-
         public override List<Tuple<int, int>> PossibleMoves()
         {
             List<Tuple<int, int>> possibleMoves = new List<Tuple<int, int>>();

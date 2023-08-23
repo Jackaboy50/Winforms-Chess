@@ -23,10 +23,8 @@ namespace Winforms_Chess
             this.yPosition = yPosition;
             this.chessForm = chessForm;
         }
-
-        public abstract void MoveDisplay();
         public abstract List<Tuple<int, int>> PossibleMoves();
-        public void PieceClick(object sender, MouseEventArgs e)
+        protected void PieceClick(object sender, MouseEventArgs e)
         {
             RemoveMoveButtons();
             foreach (Tuple<int,int> position in PossibleMoves())
@@ -43,7 +41,7 @@ namespace Winforms_Chess
             }
         }
 
-        public virtual bool LineOfSight(int xPosition, int yPosition)
+        protected virtual bool LineOfSight(int xPosition, int yPosition)
         {
             if(this.yPosition > yPosition)
             {
@@ -70,7 +68,7 @@ namespace Winforms_Chess
             return true;
         }
 
-        public void RemoveMoveButtons()
+        protected void RemoveMoveButtons()
         {
             if (movesCount > 0)
             {
@@ -85,26 +83,41 @@ namespace Winforms_Chess
             {
                 if(p != null)
                 {
-                    if ((p.xPosition + p.yPosition) % 2 != 0)
-                    {
-                        p.pieceButton.BackColor = Color.Peru;
-                    }
-                    else
-                    {
-                        p.pieceButton.BackColor = Color.BurlyWood;
-                    }
+                    UpdateBackColour(p.pieceButton, p.xPosition, p.yPosition);
                 }
             }
         }
 
-        public Tuple<bool, bool> IsMove(int xPosition, int yPosition)
+        protected void UpdateBackColour(Button button, int xPosition, int yPosition)
+        {
+            if ((xPosition + yPosition) % 2 != 0)
+            {
+                button.BackColor = Color.Peru;
+            }
+            else
+            {
+                button.BackColor = Color.BurlyWood;
+            }
+        }
+
+        protected void MoveToSpace(object sender, MouseEventArgs e)
+        {
+            Button moveButton = sender as Button;
+            xPosition = moveButton.Location.X / 100;
+            yPosition = moveButton.Location.Y / 100;
+            pieceButton.Location = moveButton.Location;
+            UpdateBackColour(pieceButton, xPosition, yPosition);
+            RemoveMoveButtons();
+        }
+
+        protected Tuple<bool, bool> IsMove(int xPosition, int yPosition)
         {
             bool pieceFound = false;
             bool isMove = false;
             if(chessForm.IsPieceAt(xPosition, yPosition))
             {
                 pieceFound = true;
-                if (chessForm.GetPieceAt(xPosition,yPosition).white != this.white)
+                if (chessForm.GetPieceAt(xPosition,yPosition).white != white)
                 {
                     isMove = true;
                 }
@@ -116,7 +129,7 @@ namespace Winforms_Chess
             return new Tuple<bool, bool>(isMove, pieceFound);
         }
 
-        public void CreateMoveButton(int xPosition, int yPosition)
+        protected void CreateMoveButton(int xPosition, int yPosition)
         {
             Button moveButton = new Button();
             moveButton.Size = new Size(100, 100);
@@ -124,26 +137,18 @@ namespace Winforms_Chess
             moveButton.BackColor = Color.Green;
             moveButton.FlatStyle = FlatStyle.Flat;
             moveButton.FlatAppearance.BorderSize = 0;
+            moveButton.MouseDown += new MouseEventHandler(MoveToSpace);
             chessForm.Controls.Add(moveButton);
             moveButton.BringToFront();
             movesCount++;
         }
-        public void InitializeButton()
+        protected void InitializeButton()
         {
             pieceButton = new Button();
             pieceButton.Size = new Size(100, 100);
             pieceButton.Location = new Point(xPosition * 100, yPosition * 100);
             pieceButton.Image = image;
-
-            if((xPosition + yPosition) % 2 != 0)
-            {
-                pieceButton.BackColor = Color.Peru;
-            }
-            else
-            {
-                pieceButton.BackColor = Color.BurlyWood;
-            }
-
+            UpdateBackColour(pieceButton, xPosition, yPosition);
             pieceButton.FlatStyle = FlatStyle.Flat;
             pieceButton.FlatAppearance.BorderSize = 0;
             pieceButton.MouseDown += new MouseEventHandler(PieceClick);
