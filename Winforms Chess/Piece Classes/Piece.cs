@@ -24,6 +24,14 @@ namespace Winforms_Chess
             this.chessForm = chessForm;
         }
         public abstract List<Tuple<int, int>> PossibleMoves();
+
+        protected void AddMove(List<Tuple<int,int>> possibleMoves, int xPosition, int yPosition)
+        {
+            if(xPosition < 8 && xPosition > -8 && yPosition < 8 && yPosition > -8)
+            {
+                possibleMoves.Add(new Tuple<int, int>(xPosition, yPosition));
+            }
+        }
         protected void PieceClick(object sender, MouseEventArgs e)
         {
             RemoveMoveButtons();

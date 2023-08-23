@@ -25,11 +25,11 @@ namespace Winforms_Chess
             List<Tuple<int, int>> possibleMoves = new List<Tuple<int, int>>();
             for(int i = -1; i < 2; i++)
             {
-                possibleMoves.Add(new Tuple<int, int>(xPosition - 1, yPosition + i ));
-                possibleMoves.Add(new Tuple<int, int>(xPosition + 1, yPosition + i));
+                AddMove(possibleMoves, xPosition - 1, yPosition + i);
+                AddMove(possibleMoves, xPosition + 1, yPosition + 1);
             }
-            possibleMoves.Add(new Tuple<int, int>(xPosition, yPosition - 1));
-            possibleMoves.Add(new Tuple<int, int>(xPosition, yPosition + 1));
+            AddMove(possibleMoves, xPosition, yPosition - 1);
+            AddMove(possibleMoves, xPosition, yPosition + 1);
             return possibleMoves;
         }
     }
