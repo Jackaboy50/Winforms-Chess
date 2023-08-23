@@ -32,5 +32,10 @@ namespace Winforms_Chess
             AddMove(possibleMoves, xPosition, yPosition + 1);
             return possibleMoves;
         }
+
+        protected override bool LineOfSight(int xPosition, int yPosition)
+        {
+            return CardinalLineOfSight(xPosition, yPosition) && DiagonalLineOfSight(xPosition, yPosition);
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.XPath;
 
 namespace Winforms_Chess
 {
@@ -38,6 +39,11 @@ namespace Winforms_Chess
                 AddMove(possibleMoves, xPosition - i, yPosition - i);
             }
             return possibleMoves;
+        }
+
+        protected override bool LineOfSight(int xPosition, int yPosition)
+        {
+            return CardinalLineOfSight(xPosition, yPosition) && DiagonalLineOfSight(xPosition, yPosition);
         }
     }
 }

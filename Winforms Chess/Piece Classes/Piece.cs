@@ -51,9 +51,13 @@ namespace Winforms_Chess
 
         protected virtual bool LineOfSight(int xPosition, int yPosition)
         {
-            if(this.yPosition > yPosition)
+            return true;
+        }
+
+        protected bool CardinalLineOfSight(int xPosition, int yPosition)
+        {
+            if (this.yPosition > yPosition)
             {
-                //Check Up
                 for (int i = this.yPosition; i > yPosition; i--)
                 {
                     if (chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
@@ -64,7 +68,6 @@ namespace Winforms_Chess
             }
             else
             {
-                //Check down
                 for (int i = this.yPosition; i < yPosition; i++)
                 {
                     if (chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
@@ -73,6 +76,34 @@ namespace Winforms_Chess
                     }
                 }
             }
+
+            if (this.xPosition > xPosition)
+            {
+                for (int i = this.xPosition; i > xPosition; i--)
+                {
+                    if (chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = this.xPosition; i < xPosition; i++)
+                {
+                    if (chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        protected bool DiagonalLineOfSight(int xPosition, int yPosition)
+        {
+
+
             return true;
         }
 
