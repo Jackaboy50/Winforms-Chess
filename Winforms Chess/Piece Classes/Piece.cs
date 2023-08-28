@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Winforms_Chess
 {
@@ -23,7 +24,7 @@ namespace Winforms_Chess
             this.yPosition = yPosition;
             this.chessForm = chessForm;
         }
-        public abstract List<Tuple<int, int>> PossibleMoves();
+        protected abstract List<Tuple<int, int>> PossibleMoves();
 
         protected void AddMove(List<Tuple<int,int>> possibleMoves, int xPosition, int yPosition)
         {
@@ -34,6 +35,10 @@ namespace Winforms_Chess
         }
         protected void PieceClick(object sender, MouseEventArgs e)
         {
+            if(e.Button == MouseButtons.Right)
+            {
+                return;
+            }
             RemoveMoveButtons();
             foreach (Tuple<int,int> position in PossibleMoves())
             {
@@ -56,42 +61,44 @@ namespace Winforms_Chess
 
         protected bool CardinalLineOfSight(int xPosition, int yPosition)
         {
-            if (this.yPosition > yPosition)
+            if(this.xPosition > xPosition && this.yPosition == yPosition)
             {
-                for (int i = this.yPosition; i > yPosition; i--)
+                for(int i = xPosition + 1; i < this.xPosition; i++)
                 {
-                    if (chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
-                    {
-                        return false;
-                    }
-                }
-            }
-            else
-            {
-                for (int i = this.yPosition; i < yPosition; i++)
-                {
-                    if (chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
+                    if(chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
                     {
                         return false;
                     }
                 }
             }
 
-            if (this.xPosition > xPosition)
+            if(this.xPosition < xPosition && this.yPosition == yPosition)
             {
-                for (int i = this.xPosition; i > xPosition; i--)
+                for(int i = xPosition - 1; i > this.xPosition; i--)
                 {
-                    if (chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
+                    if(chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
                     {
                         return false;
                     }
                 }
             }
-            else
+
+            if(this.xPosition == xPosition && this.yPosition < yPosition)
             {
-                for (int i = this.xPosition; i < xPosition; i++)
+                for(int i = yPosition - 1; i > this.yPosition; i--)
                 {
-                    if (chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
+                    if(chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if(this.xPosition == xPosition && this.yPosition > yPosition)
+            {
+                for(int i = yPosition + 1; i < this.yPosition; i++)
+                {
+                    if(chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
                     {
                         return false;
                     }
@@ -102,7 +109,49 @@ namespace Winforms_Chess
 
         protected bool DiagonalLineOfSight(int xPosition, int yPosition)
         {
+            if(this.xPosition < xPosition && this.yPosition < yPosition)
+            {
+                for(int i = 1; i < xPosition - this.xPosition; i++)
+                {
+                    if(chessForm.IsPieceAt(xPosition - i, yPosition - i) && chessForm.GetPieceAt(xPosition - i, yPosition - i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
 
+            if(this.xPosition > xPosition && this.yPosition < yPosition)
+            {
+                for(int i = 1; i < this.xPosition - xPosition; i++)
+                {
+                    if(chessForm.IsPieceAt(xPosition + i, yPosition - i) && chessForm.GetPieceAt(xPosition + i, yPosition - i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if(this.xPosition > xPosition && this.yPosition > yPosition)
+            {
+                for(int i = 1; i < this.xPosition - xPosition; i++)
+                {
+                    if(chessForm.IsPieceAt(xPosition + i, yPosition + i) && chessForm.GetPieceAt(xPosition + i, yPosition + i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if(this.xPosition < xPosition && this.yPosition > yPosition)
+            {
+                for(int i = 1; i < xPosition - this.xPosition; i++)
+                {
+                    if(chessForm.IsPieceAt(xPosition - i, yPosition + i) && chessForm.GetPieceAt(xPosition - i, yPosition + i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
 
             return true;
         }
@@ -191,7 +240,16 @@ namespace Winforms_Chess
             pieceButton.FlatStyle = FlatStyle.Flat;
             pieceButton.FlatAppearance.BorderSize = 0;
             pieceButton.MouseDown += new MouseEventHandler(PieceClick);
+            pieceButton.MouseDown += new MouseEventHandler(RightClick);
             pieceButton.BringToFront();
+        }
+
+        protected void RightClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
+                Console.WriteLine($"{xPosition},{yPosition}");
+            }
         }
     }
 }
