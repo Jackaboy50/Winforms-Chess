@@ -9,13 +9,15 @@ namespace Winforms_Chess
 {
     internal abstract class Piece
     {
-        public static int movesCount = 0;
-        public Form1 chessForm;
-        public int xPosition;
-        public int yPosition;
-        public Button pieceButton;
-        public Image image { get; protected set; }
-        public bool white { get; private set; }
+        private static int movesCount = 0;
+        public int xPosition { get; protected set; }
+        public int yPosition { get; protected set; }
+        protected bool white { get; private set; }
+
+        protected Form1 chessForm;
+        public Button pieceButton { get; protected set; }
+        protected Image image;
+       
 
         public Piece(bool white, int xPosition, int yPosition, Form1 chessForm)
         {
