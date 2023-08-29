@@ -13,6 +13,8 @@ namespace Winforms_Chess
         public int xPosition { get; protected set; }
         public int yPosition { get; protected set; }
         protected bool white { get; private set; }
+        public bool isSelected = false;
+        protected static Piece selectedPiece;
 
         protected Form1 chessForm;
         public Button pieceButton { get; protected set; }
@@ -27,6 +29,7 @@ namespace Winforms_Chess
             this.chessForm = chessForm;
         }
         protected abstract List<Tuple<int, int>> PossibleMoves();
+        protected abstract bool LineOfSight(int xPosition, int yPosition);
 
         protected void AddMove(List<Tuple<int,int>> possibleMoves, int xPosition, int yPosition)
         {
@@ -41,121 +44,42 @@ namespace Winforms_Chess
             {
                 return;
             }
-            RemoveMoveButtons();
-            foreach (Tuple<int,int> position in PossibleMoves())
+
+            if (!isSelected)
             {
-                Tuple<bool, bool> moveCheck = IsMove(position.Item1, position.Item2);
-                if(moveCheck.Item1 && moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
+                selectedPiece = this;
+                RemoveMoveButtons();
+                foreach (Tuple<int, int> position in PossibleMoves())
                 {
-                    chessForm.GetPieceAt(position.Item1,position.Item2).pieceButton.BackColor = Color.Green;
+                    Tuple<bool, bool> moveCheck = IsMove(position.Item1, position.Item2);
+                    if (moveCheck.Item1 && moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
+                    {
+                        chessForm.GetPieceAt(position.Item1, position.Item2).pieceButton.BackColor = Color.Green;
+                        chessForm.GetPieceAt(position.Item1, position.Item2).isSelected = true;
+                    }
+                    else if (moveCheck.Item1 && !moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
+                    {
+                        CreateMoveButton(position.Item1, position.Item2);
+                    }
                 }
-                else if(moveCheck.Item1 && !moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
+            }
+            else
+            {
+                if(pieceButton.BackColor == Color.Green)
                 {
-                    CreateMoveButton(position.Item1, position.Item2);
+                    RemoveMoveButtons();
+                    pieceButton.Enabled = false;
+                    pieceButton.Visible = false;
+                    SwapPieceLocation();
                 }
             }
         }
 
-        protected virtual bool LineOfSight(int xPosition, int yPosition)
+        protected void SwapPieceLocation()
         {
-            return true;
-        }
-
-        protected bool CardinalLineOfSight(int xPosition, int yPosition)
-        {
-            if(this.xPosition > xPosition && this.yPosition == yPosition)
-            {
-                for(int i = xPosition + 1; i < this.xPosition; i++)
-                {
-                    if(chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            if(this.xPosition < xPosition && this.yPosition == yPosition)
-            {
-                for(int i = xPosition - 1; i > this.xPosition; i--)
-                {
-                    if(chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            if(this.xPosition == xPosition && this.yPosition < yPosition)
-            {
-                for(int i = yPosition - 1; i > this.yPosition; i--)
-                {
-                    if(chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            if(this.xPosition == xPosition && this.yPosition > yPosition)
-            {
-                for(int i = yPosition + 1; i < this.yPosition; i++)
-                {
-                    if(chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
-        protected bool DiagonalLineOfSight(int xPosition, int yPosition)
-        {
-            if(this.xPosition < xPosition && this.yPosition < yPosition)
-            {
-                for(int i = 1; i < xPosition - this.xPosition; i++)
-                {
-                    if(chessForm.IsPieceAt(xPosition - i, yPosition - i) && chessForm.GetPieceAt(xPosition - i, yPosition - i) != this)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            if(this.xPosition > xPosition && this.yPosition < yPosition)
-            {
-                for(int i = 1; i < this.xPosition - xPosition; i++)
-                {
-                    if(chessForm.IsPieceAt(xPosition + i, yPosition - i) && chessForm.GetPieceAt(xPosition + i, yPosition - i) != this)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            if(this.xPosition > xPosition && this.yPosition > yPosition)
-            {
-                for(int i = 1; i < this.xPosition - xPosition; i++)
-                {
-                    if(chessForm.IsPieceAt(xPosition + i, yPosition + i) && chessForm.GetPieceAt(xPosition + i, yPosition + i) != this)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            if(this.xPosition < xPosition && this.yPosition > yPosition)
-            {
-                for(int i = 1; i < xPosition - this.xPosition; i++)
-                {
-                    if(chessForm.IsPieceAt(xPosition - i, yPosition + i) && chessForm.GetPieceAt(xPosition - i, yPosition + i) != this)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
+            selectedPiece.xPosition = this.xPosition;
+            selectedPiece.yPosition = this.yPosition;
+            selectedPiece.pieceButton.Location = this.pieceButton.Location;
         }
 
         protected void RemoveMoveButtons()
@@ -173,6 +97,7 @@ namespace Winforms_Chess
             {
                 if(p != null)
                 {
+                    p.isSelected = false;
                     UpdateBackColour(p.pieceButton, p.xPosition, p.yPosition);
                 }
             }
@@ -252,6 +177,103 @@ namespace Winforms_Chess
             {
                 Console.WriteLine($"{xPosition},{yPosition}");
             }
+        }
+
+        protected bool CardinalLineOfSight(int xPosition, int yPosition)
+        {
+            if (this.xPosition > xPosition && this.yPosition == yPosition)
+            {
+                for (int i = xPosition + 1; i < this.xPosition; i++)
+                {
+                    if (chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (this.xPosition < xPosition && this.yPosition == yPosition)
+            {
+                for (int i = xPosition - 1; i > this.xPosition; i--)
+                {
+                    if (chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (this.xPosition == xPosition && this.yPosition < yPosition)
+            {
+                for (int i = yPosition - 1; i > this.yPosition; i--)
+                {
+                    if (chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (this.xPosition == xPosition && this.yPosition > yPosition)
+            {
+                for (int i = yPosition + 1; i < this.yPosition; i++)
+                {
+                    if (chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        protected bool DiagonalLineOfSight(int xPosition, int yPosition)
+        {
+            if (this.xPosition < xPosition && this.yPosition < yPosition)
+            {
+                for (int i = 1; i < xPosition - this.xPosition; i++)
+                {
+                    if (chessForm.IsPieceAt(xPosition - i, yPosition - i) && chessForm.GetPieceAt(xPosition - i, yPosition - i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (this.xPosition > xPosition && this.yPosition < yPosition)
+            {
+                for (int i = 1; i < this.xPosition - xPosition; i++)
+                {
+                    if (chessForm.IsPieceAt(xPosition + i, yPosition - i) && chessForm.GetPieceAt(xPosition + i, yPosition - i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (this.xPosition > xPosition && this.yPosition > yPosition)
+            {
+                for (int i = 1; i < this.xPosition - xPosition; i++)
+                {
+                    if (chessForm.IsPieceAt(xPosition + i, yPosition + i) && chessForm.GetPieceAt(xPosition + i, yPosition + i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (this.xPosition < xPosition && this.yPosition > yPosition)
+            {
+                for (int i = 1; i < xPosition - this.xPosition; i++)
+                {
+                    if (chessForm.IsPieceAt(xPosition - i, yPosition + i) && chessForm.GetPieceAt(xPosition - i, yPosition + i) != this)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }

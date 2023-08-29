@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Winforms_Chess
 {
     internal class Pawn : Piece
-    {
+    { 
         public Pawn(bool white, int xPosition, int yPosition, Form1 chessForm) : base(white, xPosition, yPosition, chessForm)
         {
             if (white)
@@ -40,6 +40,33 @@ namespace Winforms_Chess
             }
             
             return possibleMoves;
+        }
+
+        protected override bool LineOfSight(int xPosition, int yPosition)
+        {
+            if(this.yPosition != 6 && white && yPosition == this.yPosition - 2)
+            {
+                return false;
+            }
+            else if(this.yPosition != 1 && !white && yPosition == this.yPosition + 2)
+            {
+                return false;
+            }
+            else if(this.xPosition != xPosition)
+            {
+                if(!chessForm.IsPieceAt(xPosition, yPosition))
+                {
+                    return false;
+                }
+            }
+            else if(this.xPosition == xPosition)
+            {
+                if (chessForm.IsPieceAt(xPosition, yPosition))
+                {
+                    return false;
+                }
+            }
+            return CardinalLineOfSight(xPosition, yPosition);
         }
     }
 }

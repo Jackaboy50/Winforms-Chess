@@ -113,7 +113,10 @@ namespace Winforms_Chess
             {
                 if (allPieces[i].xPosition == xPosition && allPieces[i].yPosition == yPosition)
                 {
-                    return true;
+                    if (allPieces[i].pieceButton.Visible == true)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
