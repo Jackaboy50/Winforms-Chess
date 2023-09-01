@@ -8,6 +8,7 @@ namespace Winforms_Chess
 {
     internal class King : Piece
     {
+        public bool firstMovement = true;
         public King(bool white, int xPosition, int yPosition, Form1 chessForm) : base(white, xPosition, yPosition, chessForm)
         {
             if (white)
@@ -30,12 +31,56 @@ namespace Winforms_Chess
             }
             AddMove(possibleMoves, xPosition, yPosition - 1);
             AddMove(possibleMoves, xPosition, yPosition + 1);
+
+            if (firstMovement)
+            {
+                AddMove(possibleMoves, xPosition + 3, yPosition);
+                AddMove(possibleMoves, xPosition - 4, yPosition);
+            }
             return possibleMoves;
         }
 
         protected override bool LineOfSight(int xPosition, int yPosition)
         {
+            if(firstMovement && xPosition > this.xPosition + 1 || xPosition < this.xPosition - 1)
+            {
+                return CardinalLineOfSight(xPosition, yPosition);
+            }
             return true;
+        }
+
+        protected override void MoveToSpace(object sender, MouseEventArgs e)
+        {
+            firstMovement = false;
+            base.MoveToSpace(sender, e);
+        }
+
+        protected override Tuple<bool, bool> IsMove(int xPosition, int yPosition)
+        {
+            bool pieceFound = false;
+            bool isMove = false;
+            
+            if (chessForm.IsPieceAt(xPosition, yPosition))
+            {
+                pieceFound = true;
+                if (chessForm.GetPieceAt(xPosition, yPosition).white != white)
+                {
+                    isMove = true;
+                }
+                else if (firstMovement && chessForm.GetPieceAt(xPosition, yPosition) is Rook && chessForm.GetPieceAt(xPosition, yPosition).white == white)
+                {
+                    Rook rook = chessForm.GetPieceAt(xPosition, yPosition) as Rook;
+                    if(rook.firstMovement == true)
+                    {
+                        isMove = true;
+                    }
+                }
+            }
+            if (!pieceFound)
+            {
+                isMove = true;
+            }
+            return new Tuple<bool, bool>(isMove, pieceFound);
         }
     }
 }

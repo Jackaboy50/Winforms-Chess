@@ -10,9 +10,9 @@ namespace Winforms_Chess
     internal abstract class Piece
     {
         private static int movesCount = 0;
-        public int xPosition { get; protected set; }
-        public int yPosition { get; protected set; }
-        protected bool white { get; private set; }
+        public int xPosition { get; set; }
+        public int yPosition { get; set; }
+        public bool white { get; private set; }
         public bool isSelected = false;
         protected static Piece selectedPiece;
 
@@ -75,11 +75,11 @@ namespace Winforms_Chess
             }
         }
 
-        protected void SwapPieceLocation()
+        protected virtual void SwapPieceLocation()
         {
-            selectedPiece.xPosition = this.xPosition;
-            selectedPiece.yPosition = this.yPosition;
-            selectedPiece.pieceButton.Location = this.pieceButton.Location;
+            selectedPiece.xPosition = xPosition;
+            selectedPiece.yPosition = yPosition;
+            selectedPiece.pieceButton.Location = pieceButton.Location;
         }
 
         protected void RemoveMoveButtons()
@@ -115,7 +115,7 @@ namespace Winforms_Chess
             }
         }
 
-        protected void MoveToSpace(object sender, MouseEventArgs e)
+        protected virtual void MoveToSpace(object sender, MouseEventArgs e)
         {
             Button moveButton = sender as Button;
             xPosition = moveButton.Location.X / 100;
@@ -125,14 +125,14 @@ namespace Winforms_Chess
             RemoveMoveButtons();
         }
 
-        protected Tuple<bool, bool> IsMove(int xPosition, int yPosition)
+        protected virtual Tuple<bool, bool> IsMove(int xPosition, int yPosition)
         {
             bool pieceFound = false;
             bool isMove = false;
             if(chessForm.IsPieceAt(xPosition, yPosition))
             {
                 pieceFound = true;
-                if (chessForm.GetPieceAt(xPosition,yPosition).white != white)
+                if (chessForm.GetPieceAt(xPosition, yPosition).white != white)
                 {
                     isMove = true;
                 }

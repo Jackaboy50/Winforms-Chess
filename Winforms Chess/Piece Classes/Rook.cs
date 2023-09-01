@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Winforms_Chess
 {
     internal class Rook : Piece
     {
+        public bool firstMovement = true;
         public Rook(bool white, int xPosition, int yPosition, Form1 chessForm) : base(white, xPosition, yPosition, chessForm)
         {
             if (white)
@@ -36,6 +39,46 @@ namespace Winforms_Chess
         protected override bool LineOfSight(int xPosition, int yPosition)
         {
             return CardinalLineOfSight(xPosition, yPosition);
+        }
+
+        protected override void SwapPieceLocation()
+        {
+            if (selectedPiece is King)
+            {
+                Castle();
+            }
+            else
+            {
+                firstMovement = false;
+                base.SwapPieceLocation();
+            }
+        }
+
+        protected override void MoveToSpace(object sender, MouseEventArgs e)
+        {
+            firstMovement = false;
+            base.MoveToSpace(sender, e);
+        }
+
+        private void Castle()
+        {
+            King king = selectedPiece as King;
+            king.firstMovement = false;
+            selectedPiece = king;
+            int kingMove = 2;
+            int rookMove = 2;
+            if (selectedPiece.xPosition > xPosition)
+            {
+                kingMove = -kingMove;
+                rookMove = -3;
+            }
+
+            selectedPiece.xPosition += kingMove;
+            selectedPiece.pieceButton.Location = new Point(selectedPiece.xPosition * 100, pieceButton.Location.Y);
+            xPosition -= rookMove;
+            pieceButton.Location = new Point(xPosition * 100, pieceButton.Location.Y);
+            pieceButton.Enabled = true;
+            pieceButton.Visible = true;
         }
     }
 }
