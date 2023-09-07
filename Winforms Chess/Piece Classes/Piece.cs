@@ -48,6 +48,11 @@ namespace Winforms_Chess
             if (!isSelected)
             {
                 selectedPiece = this;
+                if (InCheck() && pieceButton.BackColor != Color.Red)
+                {
+                    DenyMove();
+                    return;
+                }
                 RemoveMoveButtons();
                 foreach (Tuple<int, int> position in PossibleMoves())
                 {
@@ -75,11 +80,62 @@ namespace Winforms_Chess
             }
         }
 
+        protected bool InCheck()
+        {
+            King king;
+            if(white)
+            {
+                king = chessForm.allPieces[12] as King;
+            }
+            else
+            {
+                king = chessForm.allPieces[28] as King;
+            }
+
+            foreach(Piece p in chessForm.allPieces)
+            {
+                if (p.pieceButton.Enabled == false || p.white == white)
+                {
+                    continue;
+                }
+                foreach(Tuple<int, int> position in p.PossibleMoves())
+                {
+                    if(!p.LineOfSight(king.xPosition, king.yPosition))
+                    {
+                        break;
+                    }
+                    if(position.Item1 != king.xPosition || position.Item2 != king.yPosition)
+                    {
+                        continue;
+                    }
+                    Tuple<bool, bool> moveCheck = p.IsMove(position.Item1, position.Item2);
+                    if(moveCheck.Item1)
+                    {
+                        return true;
+                    }
+                    break;
+                }
+            }
+            return false;
+        }
+
         protected virtual void SwapPieceLocation()
         {
             selectedPiece.xPosition = xPosition;
             selectedPiece.yPosition = yPosition;
             selectedPiece.pieceButton.Location = pieceButton.Location;
+        }
+
+        protected void DenyMove()
+        {
+            RemoveMoveButtons();
+            foreach(Piece p in chessForm.allPieces)
+            {
+                if(p != null && p is King && p.white == white)
+                {
+                    p.pieceButton.BackColor = Color.Red;
+                }
+            }
         }
 
         protected void RemoveMoveButtons()
@@ -127,8 +183,8 @@ namespace Winforms_Chess
 
         protected virtual Tuple<bool, bool> IsMove(int xPosition, int yPosition)
         {
-            bool pieceFound = false;
             bool isMove = false;
+            bool pieceFound = false;
             if(chessForm.IsPieceAt(xPosition, yPosition))
             {
                 pieceFound = true;
