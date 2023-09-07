@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -53,9 +54,13 @@ namespace Winforms_Chess
                     DenyMove();
                     return;
                 }
-                RemoveMoveButtons();
+                RemoveMoveButtons(); 
                 foreach (Tuple<int, int> position in PossibleMoves())
                 {
+                    if (CausesCheck(position.Item1, position.Item2))
+                    {
+                        continue;
+                    }
                     Tuple<bool, bool> moveCheck = IsMove(position.Item1, position.Item2);
                     if (moveCheck.Item1 && moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
                     {
@@ -117,6 +122,23 @@ namespace Winforms_Chess
                 }
             }
             return false;
+        }
+
+        protected bool CausesCheck(int xPosition, int yPosition)
+        {
+            bool causesCheck = false;
+            int oldX = this.xPosition;
+            int oldY = this.yPosition;
+
+            this.xPosition = xPosition;
+            this.yPosition = yPosition;
+            if (InCheck())
+            {
+                causesCheck = true;
+            }
+            this.xPosition = oldX;
+            this.yPosition = oldY;
+            return causesCheck;
         }
 
         protected virtual void SwapPieceLocation()
