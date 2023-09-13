@@ -49,11 +49,7 @@ namespace Winforms_Chess
             if (!isSelected)
             {
                 selectedPiece = this;
-                if (InCheck() && pieceButton.BackColor != Color.Red)
-                {
-                    DenyMove();
-                    return;
-                }
+                bool stopsCheck = false;
                 RemoveMoveButtons(); 
                 foreach (Tuple<int, int> position in PossibleMoves())
                 {
@@ -61,16 +57,17 @@ namespace Winforms_Chess
                     {
                         continue;
                     }
-                    Tuple<bool, bool> moveCheck = IsMove(position.Item1, position.Item2);
-                    if (moveCheck.Item1 && moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
+                    else if (InCheck() && LineOfSight(position.Item1, position.Item2))
                     {
-                        chessForm.GetPieceAt(position.Item1, position.Item2).pieceButton.BackColor = Color.Green;
-                        chessForm.GetPieceAt(position.Item1, position.Item2).isSelected = true;
+                        stopsCheck = true;
+                        DrawMove(position);
+                        continue;
                     }
-                    else if (moveCheck.Item1 && !moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
-                    {
-                        CreateMoveButton(position.Item1, position.Item2);
-                    }
+                    DrawMove(position);
+                }
+                if (!stopsCheck && InCheck())
+                {
+                    DenyMove();
                 }
             }
             else
@@ -82,6 +79,20 @@ namespace Winforms_Chess
                     pieceButton.Visible = false;
                     SwapPieceLocation();
                 }
+            }
+        }
+
+        protected void DrawMove(Tuple<int, int> position)
+        {
+            Tuple<bool, bool> moveCheck = IsMove(position.Item1, position.Item2);
+            if (moveCheck.Item1 && moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
+            {
+                chessForm.GetPieceAt(position.Item1, position.Item2).pieceButton.BackColor = Color.Green;
+                chessForm.GetPieceAt(position.Item1, position.Item2).isSelected = true;
+            }
+            else if (moveCheck.Item1 && !moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
+            {
+                CreateMoveButton(position.Item1, position.Item2);
             }
         }
 
@@ -130,14 +141,24 @@ namespace Winforms_Chess
             int oldX = this.xPosition;
             int oldY = this.yPosition;
 
+            if(chessForm.IsPieceAt(xPosition, yPosition))
+            {
+                chessForm.GetPieceAt(xPosition, yPosition).pieceButton.Enabled = false;
+            }
+
             this.xPosition = xPosition;
             this.yPosition = yPosition;
             if (InCheck())
             {
                 causesCheck = true;
             }
+            
             this.xPosition = oldX;
             this.yPosition = oldY;
+            if (chessForm.IsPieceAt(xPosition, yPosition))
+            {
+                chessForm.GetPieceAt(xPosition, yPosition).pieceButton.Enabled = true;
+            }
             return causesCheck;
         }
 
