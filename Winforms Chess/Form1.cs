@@ -1,4 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace Winforms_Chess
 {
@@ -48,11 +49,63 @@ namespace Winforms_Chess
                 {
                     button.BackColor = Color.Peru;
                 }
+
+                if(xOffset == 0)
+                {
+                    CreateNumberLabel(xOffset, yOffset, colourFlip);
+                }
+                if(yOffset == 7)
+                {
+                    Console.WriteLine("label");
+                    CreateLetterLabel(xOffset, yOffset, colourFlip);
+                }
                 colourFlip = !colourFlip;
                 xOffset++;
 
                 Controls.Add(button);
             }
+        }
+
+        private void CreateNumberLabel(int xOffset, int yOffset, bool colourFlip)
+        {
+            Label tileNumber = new Label();
+            tileNumber.Location = new Point(xOffset * 100, yOffset * 100);
+            tileNumber.Text = (yOffset + 1).ToString();
+            tileNumber.Size = new Size(20, 20);
+            tileNumber.Font = new Font("Arial", 12, FontStyle.Bold);
+            if (!colourFlip)
+            {
+                tileNumber.ForeColor = Color.Peru;
+                tileNumber.BackColor = Color.BurlyWood;
+            }
+            else
+            {
+                tileNumber.ForeColor = Color.BurlyWood;
+                tileNumber.BackColor = Color.Peru;
+            }
+            Controls.Add(tileNumber);
+            Controls[Controls.Count - 1].BringToFront();
+        }
+
+        private void CreateLetterLabel(int xOffset, int yOffset, bool colourFlip)
+        {
+            Label tileLetter = new Label();
+            tileLetter.Location = new Point((xOffset * 100) + 80, (yOffset * 100) + 75);
+            tileLetter.Text = ((char)(104 - xOffset)).ToString();
+            tileLetter.Size = new Size(20, 20);
+            tileLetter.Font = new Font("Arial", 12, FontStyle.Bold);
+            if (!colourFlip)
+            {
+                tileLetter.ForeColor = Color.Peru;
+                tileLetter.BackColor = Color.BurlyWood;
+            }
+            else
+            {
+                tileLetter.ForeColor = Color.BurlyWood;
+                tileLetter.BackColor = Color.Peru;
+            }
+            Controls.Add(tileLetter);
+            Controls[Controls.Count - 1].BringToFront();
         }
 
         private void AddPieces()
