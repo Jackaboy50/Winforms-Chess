@@ -270,7 +270,7 @@ namespace Winforms_Chess
             pieceButton.BringToFront();
         }
 
-        protected void RightClick(object sender, MouseEventArgs e)
+        protected virtual void RightClick(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Right)
             {

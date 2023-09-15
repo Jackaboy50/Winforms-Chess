@@ -56,7 +56,6 @@ namespace Winforms_Chess
                 }
                 if(yOffset == 7)
                 {
-                    Console.WriteLine("label");
                     CreateLetterLabel(xOffset, yOffset, colourFlip);
                 }
                 colourFlip = !colourFlip;

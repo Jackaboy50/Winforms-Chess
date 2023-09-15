@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace Winforms_Chess
 {
     internal class Pawn : Piece
-    { 
+    {
+        public bool canEnPassant = false;
         public Pawn(bool white, int xPosition, int yPosition, Form1 chessForm) : base(white, xPosition, yPosition, chessForm)
         {
             if (white)
@@ -42,6 +43,48 @@ namespace Winforms_Chess
             return possibleMoves;
         }
 
+        protected override void MoveToSpace(object sender, MouseEventArgs e)
+        {
+            canEnPassant = false;
+            Button moveButton = sender as Button;
+            int xPosition = moveButton.Location.X / 100;
+            int yPosition = moveButton.Location.Y / 100;
+            if(yPosition == this.yPosition + 2 && this.yPosition == 1 && !white)
+            {
+                canEnPassant = true;
+            }
+            else if(yPosition == this.yPosition - 2 && this.yPosition == 6 && white)
+            {
+                canEnPassant = true;
+            }
+
+            if(chessForm.IsPieceAt(xPosition, yPosition - 1) && chessForm.GetPieceAt(xPosition, yPosition - 1) is Pawn)
+            {
+                Pawn pawn = chessForm.GetPieceAt(xPosition, yPosition - 1) as Pawn;
+                if (pawn.white != white)
+                {
+                    pawn.pieceButton.Enabled = false;
+                    pawn.pieceButton.Visible = false;
+                }
+            }
+            else if (chessForm.IsPieceAt(xPosition, yPosition + 1) && chessForm.GetPieceAt(xPosition, yPosition + 1) is Pawn)
+            {
+                Pawn pawn = chessForm.GetPieceAt(xPosition, yPosition + 1) as Pawn;
+                if(pawn.white != white)
+                {
+                    pawn.pieceButton.Enabled = false;
+                    pawn.pieceButton.Visible = false;
+                }
+            }
+            base.MoveToSpace(sender, e);
+        }
+
+        protected override void SwapPieceLocation()
+        {
+            canEnPassant = false;
+            base.SwapPieceLocation();
+        }
+
         protected override bool LineOfSight(int xPosition, int yPosition)
         {
             if(this.yPosition != 6 && white && yPosition == this.yPosition - 2)
@@ -56,6 +99,22 @@ namespace Winforms_Chess
             {
                 if(!chessForm.IsPieceAt(xPosition, yPosition))
                 {
+                    if(chessForm.IsPieceAt(this.xPosition - 1, this.yPosition) && chessForm.GetPieceAt(this.xPosition - 1, this.yPosition) is Pawn)
+                    {
+                        Pawn pawn = chessForm.GetPieceAt(this.xPosition - 1, this.yPosition) as Pawn;
+                        if(this.xPosition - 1 == xPosition)
+                        {
+                            return pawn.canEnPassant;
+                        }
+                    }
+                    else if(chessForm.IsPieceAt(this.xPosition + 1, this.yPosition) && chessForm.GetPieceAt(this.xPosition + 1, this.yPosition) is Pawn)
+                    {
+                        Pawn pawn = chessForm.GetPieceAt(this.xPosition + 1, this.yPosition) as Pawn;
+                        if (this.xPosition + 1 == xPosition)
+                        {
+                            return pawn.canEnPassant;
+                        }
+                    }
                     return false;
                 }
             }
@@ -67,6 +126,15 @@ namespace Winforms_Chess
                 }
             }
             return CardinalLineOfSight(xPosition, yPosition);
+        }
+
+        protected override void RightClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Console.WriteLine($"{xPosition},{yPosition}");
+                Console.WriteLine(canEnPassant);
+            }
         }
     }
 }
