@@ -78,6 +78,7 @@ namespace Winforms_Chess
                     pieceButton.Enabled = false;
                     pieceButton.Visible = false;
                     SwapPieceLocation();
+                    UpdateBackColour(selectedPiece.pieceButton, selectedPiece.xPosition, selectedPiece.yPosition);
                 }
             }
         }

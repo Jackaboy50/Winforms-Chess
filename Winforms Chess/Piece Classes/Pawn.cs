@@ -47,7 +47,6 @@ namespace Winforms_Chess
         {
             canEnPassant = false;
             Button moveButton = sender as Button;
-            int xPosition = moveButton.Location.X / 100;
             int yPosition = moveButton.Location.Y / 100;
             if(yPosition == this.yPosition + 2 && this.yPosition == 1 && !white)
             {
@@ -58,19 +57,19 @@ namespace Winforms_Chess
                 canEnPassant = true;
             }
 
-            if(chessForm.IsPieceAt(xPosition, yPosition - 1) && chessForm.GetPieceAt(xPosition, yPosition - 1) is Pawn)
+            if(chessForm.IsPieceAt(this.xPosition - 1, this.yPosition) && chessForm.GetPieceAt(this.xPosition - 1, this.yPosition) is Pawn)
             {
-                Pawn pawn = chessForm.GetPieceAt(xPosition, yPosition - 1) as Pawn;
-                if (pawn.white != white)
+                Pawn pawn = chessForm.GetPieceAt(this.xPosition - 1, this.yPosition) as Pawn;
+                if (pawn.white != white && pawn.canEnPassant)
                 {
                     pawn.pieceButton.Enabled = false;
                     pawn.pieceButton.Visible = false;
                 }
             }
-            else if (chessForm.IsPieceAt(xPosition, yPosition + 1) && chessForm.GetPieceAt(xPosition, yPosition + 1) is Pawn)
+            else if (chessForm.IsPieceAt(this.xPosition + 1, this.yPosition) && chessForm.GetPieceAt(this.xPosition + 1, this.yPosition) is Pawn)
             {
-                Pawn pawn = chessForm.GetPieceAt(xPosition, yPosition + 1) as Pawn;
-                if(pawn.white != white)
+                Pawn pawn = chessForm.GetPieceAt(this.xPosition + 1, this.yPosition) as Pawn;
+                if(pawn.white != white && pawn.canEnPassant)
                 {
                     pawn.pieceButton.Enabled = false;
                     pawn.pieceButton.Visible = false;

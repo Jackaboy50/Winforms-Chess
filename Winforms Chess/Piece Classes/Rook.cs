@@ -43,7 +43,7 @@ namespace Winforms_Chess
 
         protected override void SwapPieceLocation()
         {
-            if (selectedPiece is King)
+            if (selectedPiece is King && selectedPiece.white == white)
             {
                 Castle();
             }
