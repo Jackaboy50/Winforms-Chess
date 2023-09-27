@@ -87,7 +87,7 @@ namespace Winforms_Chess
                 tileNumber.BackColor = Color.Peru;
             }
             form.Controls.Add(tileNumber);
-            form.Controls[form.Controls.Count - 1].BringToFront();
+            BringToFront();
         }
 
         private void CreateLetterLabel(int xOffset, int yOffset, bool colourFlip)
@@ -108,7 +108,7 @@ namespace Winforms_Chess
                 tileLetter.BackColor = Color.Peru;
             }
             form.Controls.Add(tileLetter);
-            form.Controls[form.Controls.Count - 1].BringToFront();
+            BringToFront();
         }
 
         public void AddPieces()
@@ -117,8 +117,12 @@ namespace Winforms_Chess
             {
                 whitePieces[i] = new Pawn(true, i, 6, this, form);
                 blackPieces[i] = new Pawn(false, i, 1, this, form);
+
                 form.Controls.Add(whitePieces[i].pieceButton);
+                BringToFront();
+
                 form.Controls.Add(blackPieces[i].pieceButton);
+                BringToFront();
             }
 
             string pieceOrder = "rnbqkbnr";
@@ -152,7 +156,11 @@ namespace Winforms_Chess
                         break;
                 }
                 form.Controls.Add(whitePieces[i + 8].pieceButton);
+                BringToFront();
+
                 form.Controls.Add(blackPieces[i + 8].pieceButton);
+                BringToFront();
+
                 allPieces = whitePieces.Concat(blackPieces).ToArray();
             }
         }
@@ -182,6 +190,11 @@ namespace Winforms_Chess
                 }
             }
             return null;
+        }
+
+        private void BringToFront()
+        {
+            form.Controls[form.Controls.Count - 1].BringToFront();
         }
         
     }

@@ -23,5 +23,10 @@ namespace Winforms_Chess
             boardController.BuildBoard();
             menus.CreateStartMenu();
         }
+
+        public void StartGame(bool playerColour)
+        {
+            boardController.AddPieces();
+        }
     }
 }
