@@ -9,7 +9,7 @@ namespace Winforms_Chess
     internal class King : Piece
     {
         public bool firstMovement = true;
-        public King(bool white, int xPosition, int yPosition, Form1 chessForm) : base(white, xPosition, yPosition, chessForm)
+        public King(bool white, int xPosition, int yPosition, BoardController chessBoard, Form1 chessForm) : base(white, xPosition, yPosition, chessBoard, chessForm)
         {
             if (white)
             {
@@ -60,16 +60,16 @@ namespace Winforms_Chess
             bool pieceFound = false;
             bool isMove = false;
             
-            if (chessForm.IsPieceAt(xPosition, yPosition))
+            if (chessBoard.IsPieceAt(xPosition, yPosition))
             {
                 pieceFound = true;
-                if (chessForm.GetPieceAt(xPosition, yPosition).white != white)
+                if (chessBoard.GetPieceAt(xPosition, yPosition).white != white)
                 {
                     isMove = true;
                 }
-                else if (firstMovement && chessForm.GetPieceAt(xPosition, yPosition) is Rook && chessForm.GetPieceAt(xPosition, yPosition).white == white)
+                else if (firstMovement && chessBoard.GetPieceAt(xPosition, yPosition) is Rook && chessBoard.GetPieceAt(xPosition, yPosition).white == white)
                 {
-                    Rook rook = chessForm.GetPieceAt(xPosition, yPosition) as Rook;
+                    Rook rook = chessBoard.GetPieceAt(xPosition, yPosition) as Rook;
                     if(rook.firstMovement == true)
                     {
                         isMove = true;

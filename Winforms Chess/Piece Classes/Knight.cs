@@ -8,7 +8,7 @@ namespace Winforms_Chess
 {
     internal class Knight : Piece
     {
-        public Knight(bool white, int xPosition, int yPosition, Form1 chessForm) : base(white, xPosition, yPosition, chessForm)
+        public Knight(bool white, int xPosition, int yPosition, BoardController chessBoard, Form1 chessForm) : base(white, xPosition, yPosition, chessBoard, chessForm)
         {
             if (white)
             {

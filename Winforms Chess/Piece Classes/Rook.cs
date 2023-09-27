@@ -11,7 +11,7 @@ namespace Winforms_Chess
     internal class Rook : Piece
     {
         public bool firstMovement = true;
-        public Rook(bool white, int xPosition, int yPosition, Form1 chessForm) : base(white, xPosition, yPosition, chessForm)
+        public Rook(bool white, int xPosition, int yPosition, BoardController chessBoard, Form1 chessForm) : base(white, xPosition, yPosition, chessBoard,  chessForm)
         {
             if (white)
             {

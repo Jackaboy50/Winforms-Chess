@@ -16,7 +16,7 @@ namespace Winforms_Chess
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            gameController = new GameController();
+            gameController = new GameController(boardController);
             boardController = new BoardController(this);
             menus = new Menus(this);
 

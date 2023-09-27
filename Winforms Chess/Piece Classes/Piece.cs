@@ -17,16 +17,18 @@ namespace Winforms_Chess
         public bool isSelected = false;
         protected static Piece selectedPiece;
 
+        protected BoardController chessBoard;
         protected Form1 chessForm;
         public Button pieceButton { get; protected set; }
         protected Image image;
        
 
-        public Piece(bool white, int xPosition, int yPosition, Form1 chessForm)
+        public Piece(bool white, int xPosition, int yPosition, BoardController chessBoard, Form1 chessForm)
         {
             this.white = white;
             this.xPosition = xPosition;
             this.yPosition = yPosition;
+            this.chessBoard = chessBoard;
             this.chessForm = chessForm;
         }
         protected abstract List<Tuple<int, int>> PossibleMoves();
@@ -88,8 +90,8 @@ namespace Winforms_Chess
             Tuple<bool, bool> moveCheck = IsMove(position.Item1, position.Item2);
             if (moveCheck.Item1 && moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
             {
-                chessForm.GetPieceAt(position.Item1, position.Item2).pieceButton.BackColor = Color.Green;
-                chessForm.GetPieceAt(position.Item1, position.Item2).isSelected = true;
+                chessBoard.GetPieceAt(position.Item1, position.Item2).pieceButton.BackColor = Color.Green;
+                chessBoard.GetPieceAt(position.Item1, position.Item2).isSelected = true;
             }
             else if (moveCheck.Item1 && !moveCheck.Item2 && LineOfSight(position.Item1, position.Item2))
             {
@@ -102,14 +104,14 @@ namespace Winforms_Chess
             King king;
             if(white)
             {
-                king = chessForm.allPieces[12] as King;
+                king = chessBoard.allPieces[12] as King;
             }
             else
             {
-                king = chessForm.allPieces[28] as King;
+                king = chessBoard.allPieces[28] as King;
             }
 
-            foreach(Piece p in chessForm.allPieces)
+            foreach(Piece p in chessBoard.allPieces)
             {
                 if (p.pieceButton.Enabled == false || p.white == white)
                 {
@@ -142,9 +144,9 @@ namespace Winforms_Chess
             int oldX = this.xPosition;
             int oldY = this.yPosition;
 
-            if(chessForm.IsPieceAt(xPosition, yPosition))
+            if(chessBoard.IsPieceAt(xPosition, yPosition))
             {
-                chessForm.GetPieceAt(xPosition, yPosition).pieceButton.Enabled = false;
+                chessBoard.GetPieceAt(xPosition, yPosition).pieceButton.Enabled = false;
             }
 
             this.xPosition = xPosition;
@@ -156,9 +158,9 @@ namespace Winforms_Chess
             
             this.xPosition = oldX;
             this.yPosition = oldY;
-            if (chessForm.IsPieceAt(xPosition, yPosition))
+            if (chessBoard.IsPieceAt(xPosition, yPosition))
             {
-                chessForm.GetPieceAt(xPosition, yPosition).pieceButton.Enabled = true;
+                chessBoard.GetPieceAt(xPosition, yPosition).pieceButton.Enabled = true;
             }
             return causesCheck;
         }
@@ -173,7 +175,7 @@ namespace Winforms_Chess
         protected void DenyMove()
         {
             RemoveMoveButtons();
-            foreach(Piece p in chessForm.allPieces)
+            foreach(Piece p in chessBoard.allPieces)
             {
                 if(p != null && p is King && p.white == white)
                 {
@@ -193,7 +195,7 @@ namespace Winforms_Chess
                 movesCount = 0;
             }
 
-            foreach(Piece p in chessForm.allPieces)
+            foreach(Piece p in chessBoard.allPieces)
             {
                 if(p != null)
                 {
@@ -229,10 +231,10 @@ namespace Winforms_Chess
         {
             bool isMove = false;
             bool pieceFound = false;
-            if(chessForm.IsPieceAt(xPosition, yPosition))
+            if(chessBoard.IsPieceAt(xPosition, yPosition))
             {
                 pieceFound = true;
-                if (chessForm.GetPieceAt(xPosition, yPosition).white != white)
+                if (chessBoard.GetPieceAt(xPosition, yPosition).white != white)
                 {
                     isMove = true;
                 }
@@ -285,7 +287,7 @@ namespace Winforms_Chess
             {
                 for (int i = xPosition + 1; i < this.xPosition; i++)
                 {
-                    if (chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
+                    if (chessBoard.IsPieceAt(i, yPosition) && chessBoard.GetPieceAt(i, yPosition) != this)
                     {
                         return false;
                     }
@@ -296,7 +298,7 @@ namespace Winforms_Chess
             {
                 for (int i = xPosition - 1; i > this.xPosition; i--)
                 {
-                    if (chessForm.IsPieceAt(i, yPosition) && chessForm.GetPieceAt(i, yPosition) != this)
+                    if (chessBoard.IsPieceAt(i, yPosition) && chessBoard.GetPieceAt(i, yPosition) != this)
                     {
                         return false;
                     }
@@ -307,7 +309,7 @@ namespace Winforms_Chess
             {
                 for (int i = yPosition - 1; i > this.yPosition; i--)
                 {
-                    if (chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
+                    if (chessBoard.IsPieceAt(xPosition, i) && chessBoard.GetPieceAt(xPosition, i) != this)
                     {
                         return false;
                     }
@@ -318,7 +320,7 @@ namespace Winforms_Chess
             {
                 for (int i = yPosition + 1; i < this.yPosition; i++)
                 {
-                    if (chessForm.IsPieceAt(xPosition, i) && chessForm.GetPieceAt(xPosition, i) != this)
+                    if (chessBoard.IsPieceAt(xPosition, i) && chessBoard.GetPieceAt(xPosition, i) != this)
                     {
                         return false;
                     }
@@ -333,7 +335,7 @@ namespace Winforms_Chess
             {
                 for (int i = 1; i < xPosition - this.xPosition; i++)
                 {
-                    if (chessForm.IsPieceAt(xPosition - i, yPosition - i) && chessForm.GetPieceAt(xPosition - i, yPosition - i) != this)
+                    if (chessBoard.IsPieceAt(xPosition - i, yPosition - i) && chessBoard.GetPieceAt(xPosition - i, yPosition - i) != this)
                     {
                         return false;
                     }
@@ -344,7 +346,7 @@ namespace Winforms_Chess
             {
                 for (int i = 1; i < this.xPosition - xPosition; i++)
                 {
-                    if (chessForm.IsPieceAt(xPosition + i, yPosition - i) && chessForm.GetPieceAt(xPosition + i, yPosition - i) != this)
+                    if (chessBoard.IsPieceAt(xPosition + i, yPosition - i) && chessBoard.GetPieceAt(xPosition + i, yPosition - i) != this)
                     {
                         return false;
                     }
@@ -355,7 +357,7 @@ namespace Winforms_Chess
             {
                 for (int i = 1; i < this.xPosition - xPosition; i++)
                 {
-                    if (chessForm.IsPieceAt(xPosition + i, yPosition + i) && chessForm.GetPieceAt(xPosition + i, yPosition + i) != this)
+                    if (chessBoard.IsPieceAt(xPosition + i, yPosition + i) && chessBoard.GetPieceAt(xPosition + i, yPosition + i) != this)
                     {
                         return false;
                     }
@@ -366,7 +368,7 @@ namespace Winforms_Chess
             {
                 for (int i = 1; i < xPosition - this.xPosition; i++)
                 {
-                    if (chessForm.IsPieceAt(xPosition - i, yPosition + i) && chessForm.GetPieceAt(xPosition - i, yPosition + i) != this)
+                    if (chessBoard.IsPieceAt(xPosition - i, yPosition + i) && chessBoard.GetPieceAt(xPosition - i, yPosition + i) != this)
                     {
                         return false;
                     }
