@@ -25,7 +25,7 @@ namespace Winforms_Chess
         protected override List<Tuple<int,int>> PossibleMoves()
         {
             List<Tuple<int,int>> possibleMoves = new List<Tuple<int,int>>();
-            if (white)
+            if (white == whiteAtBottom)
             {
                 AddMove(possibleMoves, xPosition, yPosition - 1);
                 AddMove(possibleMoves, xPosition, yPosition - 2);

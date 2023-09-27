@@ -13,8 +13,11 @@ namespace Winforms_Chess
         private static int movesCount = 0;
         public int xPosition { get; set; }
         public int yPosition { get; set; }
+        protected int initialXPosition;
+        protected int initialYPosition;
         public bool white { get; private set; }
         public bool isSelected = false;
+        protected static bool whiteAtBottom;
         protected static Piece selectedPiece;
 
         protected BoardController chessBoard;
@@ -30,6 +33,14 @@ namespace Winforms_Chess
             this.yPosition = yPosition;
             this.chessBoard = chessBoard;
             this.chessForm = chessForm;
+
+            initialXPosition = this.xPosition;
+            initialYPosition = this.yPosition;
+        }
+
+        public static void SetWhitePosition(bool whiteOnBottom)
+        {
+            whiteAtBottom = whiteOnBottom;
         }
         protected abstract List<Tuple<int, int>> PossibleMoves();
         protected abstract bool LineOfSight(int xPosition, int yPosition);

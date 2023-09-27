@@ -10,6 +10,7 @@ namespace Winforms_Chess
     internal class BoardController
     {
         Form1 form;
+
         Button[,] chessBoard = new Button[8, 8];
         Piece[] whitePieces = new Piece[16];
         Piece[] blackPieces = new Piece[16];
@@ -87,7 +88,6 @@ namespace Winforms_Chess
                 tileNumber.BackColor = Color.Peru;
             }
             form.Controls.Add(tileNumber);
-            BringToFront();
         }
 
         private void CreateLetterLabel(int xOffset, int yOffset, bool colourFlip)
@@ -108,15 +108,47 @@ namespace Winforms_Chess
                 tileLetter.BackColor = Color.Peru;
             }
             form.Controls.Add(tileLetter);
-            BringToFront();
         }
 
-        public void AddPieces()
+        public void AddPieces(bool whiteAtBottom)
+        {
+            Piece.SetWhitePosition(whiteAtBottom);
+
+            int whiteYPosition;
+            int blackYPosition;
+
+            if (whiteAtBottom)
+            {
+                whiteYPosition = 6;
+                blackYPosition = 1;
+            }
+            else
+            {
+                whiteYPosition = 1;
+                blackYPosition = 6;
+            }
+
+            AddPawns(whiteYPosition, blackYPosition);
+
+            if(whiteYPosition > blackYPosition)
+            {
+                whiteYPosition++;
+                blackYPosition--;
+            }
+            else
+            {
+                whiteYPosition--;
+                blackYPosition++;
+            }
+            AddSpecialPieces(whiteYPosition, blackYPosition);
+            BringLabelsToFront();
+        }
+        private void AddPawns(int whiteYPosition, int blackYPosition)
         {
             for (int i = 0; i < 8; i++)
             {
-                whitePieces[i] = new Pawn(true, i, 6, this, form);
-                blackPieces[i] = new Pawn(false, i, 1, this, form);
+                whitePieces[i] = new Pawn(true, i, whiteYPosition, this, form);
+                blackPieces[i] = new Pawn(false, i, blackYPosition, this, form);
 
                 form.Controls.Add(whitePieces[i].pieceButton);
                 BringToFront();
@@ -124,35 +156,38 @@ namespace Winforms_Chess
                 form.Controls.Add(blackPieces[i].pieceButton);
                 BringToFront();
             }
+        }
 
+        private void AddSpecialPieces(int whiteYPosition, int blackYPosition)
+        {
             string pieceOrder = "rnbqkbnr";
             for (int i = 0; i < 8; i++)
             {
                 switch (pieceOrder[i])
                 {
                     case 'r':
-                        whitePieces[i + 8] = new Rook(true, i, 7, this, form);
-                        blackPieces[i + 8] = new Rook(false, i, 0, this, form);
+                        whitePieces[i + 8] = new Rook(true, i, whiteYPosition, this, form);
+                        blackPieces[i + 8] = new Rook(false, i, blackYPosition, this, form);
                         break;
 
                     case 'n':
-                        whitePieces[i + 8] = new Knight(true, i, 7, this, form);
-                        blackPieces[i + 8] = new Knight(false, i, 0, this, form);
+                        whitePieces[i + 8] = new Knight(true, i, whiteYPosition, this, form);
+                        blackPieces[i + 8] = new Knight(false, i, blackYPosition, this, form);
                         break;
 
                     case 'b':
-                        whitePieces[i + 8] = new Bishop(true, i, 7, this, form);
-                        blackPieces[i + 8] = new Bishop(false, i, 0, this, form);
+                        whitePieces[i + 8] = new Bishop(true, i, whiteYPosition, this, form);
+                        blackPieces[i + 8] = new Bishop(false, i, blackYPosition, this, form);
                         break;
 
                     case 'q':
-                        whitePieces[i + 8] = new Queen(true, i, 7, this, form);
-                        blackPieces[i + 8] = new Queen(false, i, 0, this, form);
+                        whitePieces[i + 8] = new Queen(true, i, whiteYPosition, this, form);
+                        blackPieces[i + 8] = new Queen(false, i, blackYPosition, this, form);
                         break;
 
                     case 'k':
-                        whitePieces[i + 8] = new King(true, i, 7, this, form);
-                        blackPieces[i + 8] = new King(false, i, 0, this, form);
+                        whitePieces[i + 8] = new King(true, i, whiteYPosition, this, form);
+                        blackPieces[i + 8] = new King(false, i, blackYPosition, this, form);
                         break;
                 }
                 form.Controls.Add(whitePieces[i + 8].pieceButton);
@@ -196,6 +231,17 @@ namespace Winforms_Chess
         {
             form.Controls[form.Controls.Count - 1].BringToFront();
         }
-        
+
+        private void BringLabelsToFront()
+        {
+            foreach (Control c in form.Controls)
+            {
+                if(c is Label)
+                {
+                    form.Controls[form.Controls.IndexOf(c)].BringToFront();
+                }
+            }
+        }
+
     }
 }

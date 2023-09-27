@@ -26,7 +26,7 @@ namespace Winforms_Chess
 
         public void StartGame(bool playerColour)
         {
-            boardController.AddPieces();
+            boardController.AddPieces(playerColour);
         }
     }
 }
