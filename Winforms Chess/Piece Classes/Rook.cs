@@ -60,6 +60,11 @@ namespace Winforms_Chess
             base.MoveToSpace(sender, e);
         }
 
+        protected override bool CausesCheck(int xPosition, int yPosition)
+        {
+            return base.CausesCheck(xPosition, yPosition);
+        }
+
         private void Castle()
         {
             King king = selectedPiece as King;
@@ -72,7 +77,6 @@ namespace Winforms_Chess
                 kingMove = -kingMove;
                 rookMove = -3;
             }
-
             selectedPiece.xPosition += kingMove;
             selectedPiece.pieceButton.Location = new Point(selectedPiece.xPosition * 100, pieceButton.Location.Y);
             xPosition -= rookMove;

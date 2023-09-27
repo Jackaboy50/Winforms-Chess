@@ -53,7 +53,7 @@ namespace Winforms_Chess
                 RemoveMoveButtons(); 
                 foreach (Tuple<int, int> position in PossibleMoves())
                 {
-                    if (CausesCheck(position.Item1, position.Item2))
+                    if(CausesCheck(position.Item1, position.Item2))
                     {
                         continue;
                     }
@@ -136,7 +136,7 @@ namespace Winforms_Chess
             return false;
         }
 
-        protected bool CausesCheck(int xPosition, int yPosition)
+        protected virtual bool CausesCheck(int xPosition, int yPosition)
         {
             bool causesCheck = false;
             int oldX = this.xPosition;

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\jackt\\Documents\\Winforms-Chess\\Winforms Chess\\Winforms Chess.csproj": {}
+    "D:\\jackt\\Documents\\Coding Projects\\Winforms-Chess\\Winforms Chess\\Winforms Chess.csproj": {}
   },
   "projects": {
-    "D:\\jackt\\Documents\\Winforms-Chess\\Winforms Chess\\Winforms Chess.csproj": {
+    "D:\\jackt\\Documents\\Coding Projects\\Winforms-Chess\\Winforms Chess\\Winforms Chess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\jackt\\Documents\\Winforms-Chess\\Winforms Chess\\Winforms Chess.csproj",
+        "projectUniqueName": "D:\\jackt\\Documents\\Coding Projects\\Winforms-Chess\\Winforms Chess\\Winforms Chess.csproj",
         "projectName": "Winforms Chess",
-        "projectPath": "D:\\jackt\\Documents\\Winforms-Chess\\Winforms Chess\\Winforms Chess.csproj",
+        "projectPath": "D:\\jackt\\Documents\\Coding Projects\\Winforms-Chess\\Winforms Chess\\Winforms Chess.csproj",
         "packagesPath": "C:\\Users\\jackt\\.nuget\\packages\\",
-        "outputPath": "D:\\jackt\\Documents\\Winforms-Chess\\Winforms Chess\\obj\\",
+        "outputPath": "D:\\jackt\\Documents\\Coding Projects\\Winforms-Chess\\Winforms Chess\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
