@@ -1,4 +1,6 @@
-﻿namespace Winforms_Chess
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Winforms_Chess
 {
     internal class Menus
     {
@@ -6,10 +8,22 @@
         bool startAsWhite = true;
 
         Panel startMenu;
-        Button startButton;
         Button choiceWhite;
         Button choiceBlack;
         Label choiceLabel;
+
+        Panel promoteMenu;
+        string[] imagePaths = new string[]
+        {
+            "whitePieces\\whiteQueen.png",
+            "whitePieces\\whiteKnight.png",
+            "whitePieces\\whiteRook.png",
+            "whitePieces\\whiteBishop.png",
+            "blackPieces\\blackQueen.png",
+            "blackPieces\\blackKnight.png",
+            "blackPieces\\blackRook.png",
+            "blackPieces\\blackBishop.png"
+        };
         public Menus(Form1 form)
         {
             this.form = form;
@@ -23,7 +37,7 @@
             startMenu.BackColor = Color.LightGray;
             startMenu.BorderStyle = BorderStyle.FixedSingle;
 
-            startButton = new Button();
+            Button startButton = new Button();
             startButton.Size = new Size(200, 40);
             startButton.Location = new Point(151, 200);
             startButton.Text = "Start Game";
@@ -64,9 +78,32 @@
 
         }
 
-        public void CreatePromoteMenu()
+        public void CreatePromoteMenu(int pieceXPosition, int pieceYPosition, bool white)
         {
+            int panelOffset = 0;
+            if(pieceYPosition != 0)
+            {
+                panelOffset = 300;
+            }
+            promoteMenu = new Panel();
+            promoteMenu.Size = new Size(100, 400);
+            promoteMenu.Location = new Point(pieceXPosition * 100, (pieceYPosition * 100) - panelOffset);
+            promoteMenu.BackColor = Color.LightGray;
+            promoteMenu.BorderStyle = BorderStyle.FixedSingle;
 
+            for(int i = 0; i < 4; i++)
+            {
+                Button choiceButton = new Button();
+                choiceButton.Size = new Size(100, 100);
+                choiceButton.Location = new Point(0, i * 100);
+                choiceButton.BackColor = Color.LightGray;
+                choiceButton.FlatStyle = FlatStyle.Flat;
+                choiceButton.Image = new Bitmap(imagePaths[white ? i : i + 4]);
+                choiceButton.FlatAppearance.BorderSize = 0;
+                promoteMenu.Controls.Add(choiceButton);
+            }
+            form.Controls.Add(promoteMenu);
+            form.Controls[form.Controls.Count - 1].BringToFront();
         }
 
         private void StartButtonClick(object sender, MouseEventArgs e)
