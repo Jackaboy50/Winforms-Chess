@@ -5,9 +5,8 @@ namespace Winforms_Chess
 {
     internal partial class Form1 : Form
     {
-        GameController gameController;
-        BoardController boardController;
-        Menus menus;
+        public BoardController boardController;
+        public Menus menus;
         
         public Form1()
         {
@@ -16,7 +15,8 @@ namespace Winforms_Chess
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            gameController = new GameController(boardController);
+            MaximizeBox = false;
+            Size = new Size(815, 835);
             boardController = new BoardController(this);
             menus = new Menus(this);
 

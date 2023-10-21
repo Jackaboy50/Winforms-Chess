@@ -43,39 +43,60 @@ namespace Winforms_Chess
             return possibleMoves;
         }
 
+        protected override void CheckPromote()
+        {
+            //If white starts at the bottom it can promote at Y: 0, Y: 7 if it starts at top
+            int yPromotePosition = whiteAtBottom && white ? 0 : 7;
+            if(yPosition == yPromotePosition)
+            {
+                selectedPiece = this;
+                chessBoard.PromotePiece(xPosition, yPosition, white);
+            }
+        }
+
         protected override void MoveToSpace(object sender, MouseEventArgs e)
         {
             canEnPassant = false;
             Button moveButton = sender as Button;
-            int yPosition = moveButton.Location.Y / 100;
-            if(yPosition == this.yPosition + 2 && this.yPosition == 1 && !white)
-            {
-                canEnPassant = true;
-            }
-            else if(yPosition == this.yPosition - 2 && this.yPosition == 6 && white)
-            {
-                canEnPassant = true;
-            }
 
-            if(chessBoard.IsPieceAt(this.xPosition - 1, this.yPosition) && chessBoard.GetPieceAt(this.xPosition - 1, this.yPosition) is Pawn)
+            CheckEnPassant();
+            EnPassant(moveButton.Location.Y / 100);
+            base.MoveToSpace(sender, e);
+            CheckPromote();
+        }
+
+        protected void CheckEnPassant()
+        {
+            if (yPosition == yPosition + 2 && yPosition == 1 && !white)
             {
-                Pawn pawn = chessBoard.GetPieceAt(this.xPosition - 1, this.yPosition) as Pawn;
+                canEnPassant = true;
+            }
+            else if (yPosition == yPosition - 2 && yPosition == 6 && white)
+            {
+                canEnPassant = true;
+            }
+        }
+
+        protected void EnPassant(int yPosition)
+        {
+            if (chessBoard.IsPieceAt(xPosition - 1, yPosition) && chessBoard.GetPieceAt(xPosition - 1, yPosition) is Pawn)
+            {
+                Pawn pawn = chessBoard.GetPieceAt(xPosition - 1, yPosition) as Pawn;
                 if (pawn.white != white && pawn.canEnPassant)
                 {
                     pawn.pieceButton.Enabled = false;
                     pawn.pieceButton.Visible = false;
                 }
             }
-            else if (chessBoard.IsPieceAt(this.xPosition + 1, this.yPosition) && chessBoard.GetPieceAt(this.xPosition + 1, this.yPosition) is Pawn)
+            else if (chessBoard.IsPieceAt(xPosition + 1, yPosition) && chessBoard.GetPieceAt(xPosition + 1, yPosition) is Pawn)
             {
-                Pawn pawn = chessBoard.GetPieceAt(this.xPosition + 1, this.yPosition) as Pawn;
-                if(pawn.white != white && pawn.canEnPassant)
+                Pawn pawn = chessBoard.GetPieceAt(xPosition + 1, yPosition) as Pawn;
+                if (pawn.white != white && pawn.canEnPassant)
                 {
                     pawn.pieceButton.Enabled = false;
                     pawn.pieceButton.Visible = false;
                 }
             }
-            base.MoveToSpace(sender, e);
         }
 
         protected override void SwapPieceLocation()
@@ -86,11 +107,11 @@ namespace Winforms_Chess
 
         protected override bool LineOfSight(int xPosition, int yPosition)
         {
-            if(this.yPosition != 6 && white && yPosition == this.yPosition - 2)
+            if(this.yPosition != initialYPosition && yPosition == this.yPosition - 2)
             {
                 return false;
             }
-            else if(this.yPosition != 1 && !white && yPosition == this.yPosition + 2)
+            else if(this.yPosition != initialYPosition && yPosition == this.yPosition + 2)
             {
                 return false;
             }

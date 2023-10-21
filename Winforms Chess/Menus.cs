@@ -98,12 +98,22 @@ namespace Winforms_Chess
                 choiceButton.Location = new Point(0, i * 100);
                 choiceButton.BackColor = Color.LightGray;
                 choiceButton.FlatStyle = FlatStyle.Flat;
-                choiceButton.Image = new Bitmap(imagePaths[white ? i : i + 4]);
+                int index = white ? i : i + 4;
+                choiceButton.Image = new Bitmap(imagePaths[index]);
+                choiceButton.Name = imagePaths[index].Substring(17, imagePaths[index].IndexOf('.') - 17);
+                choiceButton.MouseDown += new MouseEventHandler(PromoteButtonClick);
                 choiceButton.FlatAppearance.BorderSize = 0;
                 promoteMenu.Controls.Add(choiceButton);
             }
             form.Controls.Add(promoteMenu);
             form.Controls[form.Controls.Count - 1].BringToFront();
+        }
+
+        private void PromoteButtonClick(object sender, MouseEventArgs e)
+        {
+            Button button = sender as Button;
+            form.boardController.PromoteChoice(button.Name);
+            form.Controls.Remove(button.Parent);
         }
 
         private void StartButtonClick(object sender, MouseEventArgs e)

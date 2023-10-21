@@ -42,7 +42,7 @@ namespace Winforms_Chess
 
         protected override bool LineOfSight(int xPosition, int yPosition)
         {
-            if(firstMovement && xPosition > this.xPosition + 1 || xPosition < this.xPosition - 1)
+            if(firstMovement && (xPosition > this.xPosition + 1 || xPosition < this.xPosition - 1))
             {
                 return CardinalLineOfSight(xPosition, yPosition);
             }

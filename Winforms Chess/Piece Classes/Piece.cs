@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace Winforms_Chess
+﻿namespace Winforms_Chess
 {
     internal abstract class Piece
     {
@@ -18,7 +10,7 @@ namespace Winforms_Chess
         public bool white { get; private set; }
         public bool isSelected = false;
         protected static bool whiteAtBottom;
-        protected static Piece selectedPiece;
+        public static Piece selectedPiece { get; protected set; }
 
         protected BoardController chessBoard;
         protected Form1 chessForm;
@@ -66,7 +58,7 @@ namespace Winforms_Chess
                 RemoveMoveButtons(); 
                 foreach (Tuple<int, int> position in PossibleMoves())
                 {
-                    if(CausesCheck(position.Item1, position.Item2))
+                    if (CausesCheck(position.Item1, position.Item2))
                     {
                         continue;
                     }
@@ -122,15 +114,15 @@ namespace Winforms_Chess
                 king = chessBoard.allPieces[28] as King;
             }
 
-            foreach(Piece p in chessBoard.allPieces)
+            foreach(Piece piece in chessBoard.allPieces)
             {
-                if (p.pieceButton.Enabled == false || p.white == white)
+                if (piece.pieceButton.Enabled == false || piece.white == white)
                 {
                     continue;
                 }
-                foreach(Tuple<int, int> position in p.PossibleMoves())
+                foreach(Tuple<int, int> position in piece.PossibleMoves())
                 {
-                    if(!p.LineOfSight(king.xPosition, king.yPosition))
+                    if(!piece.LineOfSight(king.xPosition, king.yPosition))
                     {
                         break;
                     }
@@ -138,7 +130,7 @@ namespace Winforms_Chess
                     {
                         continue;
                     }
-                    Tuple<bool, bool> moveCheck = p.IsMove(position.Item1, position.Item2);
+                    Tuple<bool, bool> moveCheck = piece.IsMove(position.Item1, position.Item2);
                     if(moveCheck.Item1)
                     {
                         return true;
@@ -181,6 +173,18 @@ namespace Winforms_Chess
             selectedPiece.xPosition = xPosition;
             selectedPiece.yPosition = yPosition;
             selectedPiece.pieceButton.Location = pieceButton.Location;
+            if(selectedPiece is Pawn)
+            {
+                selectedPiece.CheckPromote();
+            }
+        }
+
+        protected virtual void CheckPromote()
+        {
+            if(!(this is Pawn))
+            {
+                return;
+            }
         }
 
         protected void DenyMove()

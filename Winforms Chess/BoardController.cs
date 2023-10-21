@@ -200,6 +200,59 @@ namespace Winforms_Chess
             }
         }
 
+        public void PromotePiece(int xPosition, int yPosition, bool white)
+        {
+            foreach(Piece piece in allPieces)
+            {
+                piece.pieceButton.Enabled = false;
+            }
+            form.menus.CreatePromoteMenu(xPosition, yPosition, white);
+        }
+
+        public void PromoteChoice(string choice)
+        {
+            Pawn pawn = Piece.selectedPiece as Pawn;
+            Piece piece = null;
+            switch (choice)
+            {
+                case "Queen":
+                    piece = new Queen(pawn.white, pawn.xPosition, pawn.yPosition, this, form);
+                    break;
+
+                case "Knight":
+                    piece = new Knight(pawn.white, pawn.xPosition, pawn.yPosition, this, form);
+                    break;
+
+                case "Rook":
+                    piece = new Rook(pawn.white, pawn.xPosition, pawn.yPosition, this, form);
+                    break;
+
+                case "Bishop":
+                    piece = new Bishop(pawn.white, pawn.xPosition, pawn.yPosition, this, form);
+                    break;
+            }
+            form.Controls.Add(piece.pieceButton);
+            BringToFront();
+            ReplacePiece(piece);
+            foreach (Piece p in allPieces)
+            {
+                p.pieceButton.Enabled = true;
+            }
+        }
+
+        private void ReplacePiece(Piece piece)
+        {
+            for(int i = 0; i < allPieces.Length; i++)
+            {
+                if(allPieces[i] == Piece.selectedPiece)
+                {
+                    allPieces[i] = piece;
+                    Piece.selectedPiece.pieceButton.Visible = false;
+                    Piece.selectedPiece.pieceButton.Enabled = false;
+                }
+            }
+        }
+
         public bool IsPieceAt(int xPosition, int yPosition)
         {
             for (int i = 0; i < allPieces.Length; i++)
