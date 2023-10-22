@@ -257,7 +257,7 @@ namespace Winforms_Chess
         {
             for (int i = 0; i < allPieces.Length; i++)
             {
-                if (allPieces[i].xPosition == xPosition && allPieces[i].yPosition == yPosition)
+                if (allPieces[i].xPosition == xPosition && allPieces[i].yPosition == yPosition && allPieces[i].pieceButton.Visible == true)
                 {
                     if (allPieces[i].pieceButton.Visible == true)
                     {
@@ -272,7 +272,7 @@ namespace Winforms_Chess
         {
             for (int i = 0; i < allPieces.Length; i++)
             {
-                if (allPieces[i].xPosition == xPosition && allPieces[i].yPosition == yPosition)
+                if (allPieces[i].xPosition == xPosition && allPieces[i].yPosition == yPosition && allPieces[i].pieceButton.Visible == true)
                 {
                     return allPieces[i];
                 }

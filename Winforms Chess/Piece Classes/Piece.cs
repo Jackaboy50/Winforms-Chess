@@ -116,7 +116,11 @@
 
             foreach(Piece piece in chessBoard.allPieces)
             {
-                if (piece.pieceButton.Enabled == false || piece.white == white)
+                if (!piece.pieceButton.Enabled)
+                {
+                    continue;
+                }
+                if(piece.white == white)
                 {
                     continue;
                 }
@@ -154,10 +158,7 @@
 
             this.xPosition = xPosition;
             this.yPosition = yPosition;
-            if (InCheck())
-            {
-                causesCheck = true;
-            }
+            causesCheck = InCheck();
             
             this.xPosition = oldX;
             this.yPosition = oldY;
